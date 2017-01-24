@@ -1,3 +1,7 @@
+2017.01.24 11:07
+- all components added
+- removed duplicate top module
+
 2017.01.23 22:46
 - new components added
 - replaced new testbench
