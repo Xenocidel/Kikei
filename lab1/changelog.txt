@@ -1,0 +1,3 @@
+2017.01.23 16:22
+- copied provided files from website
+- added decoder, regfile components
