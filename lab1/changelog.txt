@@ -1,3 +1,7 @@
+2017.01.23 22:46
+- new components added
+- replaced new testbench
+
 2017.01.23 16:22
 - copied provided files from website
 - added decoder, regfile components
