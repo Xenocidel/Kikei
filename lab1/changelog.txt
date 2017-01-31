@@ -1,5 +1,5 @@
-2017.01.30 16:02
-- fixed everything(?)
+2017.01.30 16:11
+- fixed everything
 
 2017.01.30 14:42
 - added ALU
