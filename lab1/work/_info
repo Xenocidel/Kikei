@@ -1,0 +1,408 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/users/ugrad2/2015/spring/aliao4/eecs112l/lab1/design
+vadder
+Z1 DXx6 sv_std 3 std 0 22 WmjPaeP=7F5?QFXzJ>D[Q2
+Z2 !s110 1486276047
+!i10b 1
+!s100 iC4Om^1`R9Ze28k?lgL;R3
+IGcc=_J=AA;ELoGAg_eX6m2
+Z3 VDg1SIo80bB@j0V0VzS_@n1
+!s105 adder_sv_unit
+S1
+R0
+Z4 w1485284015
+8adder.sv
+Fadder.sv
+L0 1
+Z5 OL;L;10.4c;61
+r1
+!s85 0
+31
+Z6 !s108 1486276047.000000
+Z7 !s107 regfile.sv|mux2.sv|flopenr.sv|flopr.sv|extend.sv|decoder.sv|datapath.sv|controller.sv|condlogic.sv|arm.sv|alu.sv|adder.sv|
+Z8 !s90 -64|-sv|-f|rtl.cfg|-work|../work|
+!i113 0
+Z9 o-sv -work ../work -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+valu
+R1
+R2
+!i10b 1
+!s100 ==N^NlODOdb;10iHSzT^Z2
+IJMNWV9=lYNFSS[kEa1C@11
+R3
+!s105 alu_sv_unit
+S1
+R0
+w1486274187
+8alu.sv
+Falu.sv
+L0 1
+R5
+r1
+!s85 0
+31
+R6
+R7
+R8
+!i113 0
+R9
+varm
+R1
+R2
+!i10b 1
+!s100 c16YXj?ibE6[f<oDLI2E<3
+I;HocMjiJ3>C>KfKdYj?FN3
+R3
+!s105 arm_sv_unit
+S1
+R0
+w1485820864
+8arm.sv
+Farm.sv
+L0 1
+R5
+r1
+!s85 0
+31
+R6
+R7
+R8
+!i113 0
+R9
+vcondcheck
+R1
+R2
+!i10b 1
+!s100 KR3^[iDZ_V6X?j;SoPDKO0
+I>>CWoTPL2zdigS5g63Wfo1
+R3
+Z10 !s105 condlogic_sv_unit
+S1
+R0
+Z11 w1486274513
+Z12 8condlogic.sv
+Z13 Fcondlogic.sv
+L0 25
+R5
+r1
+!s85 0
+31
+R6
+R7
+R8
+!i113 0
+R9
+vcondlogic
+R1
+R2
+!i10b 1
+!s100 5Ahj::SE0Mc>;<X1?Km]g2
+IXVbo_H9@NAL2RHh;m3LZM0
+R3
+R10
+S1
+R0
+R11
+R12
+R13
+L0 1
+R5
+r1
+!s85 0
+31
+R6
+R7
+R8
+!i113 0
+R9
+vcontroller
+R1
+R2
+!i10b 1
+!s100 f=1geWCYZgVjl81nkHT@30
+I83Cf@LlHUX;4W^I0B@J?l1
+R3
+!s105 controller_sv_unit
+S1
+R0
+R4
+8controller.sv
+Fcontroller.sv
+L0 1
+R5
+r1
+!s85 0
+31
+R6
+R7
+R8
+!i113 0
+R9
+vdatapath
+R1
+R2
+!i10b 1
+!s100 dNkYJYM9jnLFF[BE5T=X@3
+IcILK@jjn9i9l`hNTfgKnI3
+R3
+!s105 datapath_sv_unit
+S1
+R0
+R4
+8datapath.sv
+Fdatapath.sv
+L0 1
+R5
+r1
+!s85 0
+31
+R6
+R7
+R8
+!i113 0
+R9
+vdecoder
+R1
+R2
+!i10b 1
+!s100 E:Z;<VIL_8zgbJYe5caPP3
+IA44CF;SlQ_XDc=<K@eRg^0
+R3
+!s105 decoder_sv_unit
+S1
+R0
+R4
+8decoder.sv
+Fdecoder.sv
+L0 1
+R5
+r1
+!s85 0
+31
+R6
+R7
+R8
+!i113 0
+R9
+vdmem
+R1
+Z14 !s110 1486276056
+!i10b 1
+!s100 K^Vmk_H=4JRbYGMD8aW`P0
+IN_gd`jUz[XLO1k2hV:IUD0
+R3
+!s105 dmem_sv_unit
+S1
+Z15 d/users/ugrad2/2015/spring/aliao4/eecs112l/lab1/verif
+w1485284733
+8dmem.sv
+Fdmem.sv
+L0 1
+R5
+r1
+!s85 0
+31
+Z16 !s108 1486276056.000000
+Z17 !s107 imem.sv|dmem.sv|top.sv|tb_top.sv|
+Z18 !s90 -64|-sv|-f|tb.cfg|-work|../work|
+!i113 0
+R9
+vextend
+R1
+R2
+!i10b 1
+!s100 []d3:Ie]9oFY<[X@DHU4Z2
+IL]]g==dP;>ez@iOi?_mWm1
+R3
+!s105 extend_sv_unit
+S1
+R0
+R4
+8extend.sv
+Fextend.sv
+L0 1
+R5
+r1
+!s85 0
+31
+R6
+R7
+R8
+!i113 0
+R9
+vflopenr
+R1
+R2
+!i10b 1
+!s100 Jj494[oRc02Kd?3b8T5_d2
+ILKlCDdcT`fg8HfODX7;KJ1
+R3
+!s105 flopenr_sv_unit
+S1
+R0
+w1486274962
+8flopenr.sv
+Fflopenr.sv
+L0 1
+R5
+r1
+!s85 0
+31
+R6
+R7
+R8
+!i113 0
+R9
+vflopr
+R1
+R2
+!i10b 1
+!s100 NRP59hF6UhK3=YbQmoSib1
+IeEe<_GE7KF6]?8SDicW>20
+R3
+!s105 flopr_sv_unit
+S1
+R0
+w1486274312
+8flopr.sv
+Fflopr.sv
+L0 1
+R5
+r1
+!s85 0
+31
+R6
+R7
+R8
+!i113 0
+R9
+vimem
+R1
+R14
+!i10b 1
+!s100 i_<N]1?S]iO3@2PHQ^=1Y0
+IQ>NY;V=;JWnl5T60fZo9S0
+R3
+!s105 imem_sv_unit
+S1
+R15
+R4
+8imem.sv
+Fimem.sv
+L0 1
+R5
+r1
+!s85 0
+31
+R16
+R17
+R18
+!i113 0
+R9
+vmux2
+R1
+R2
+!i10b 1
+!s100 k^C3f5?<kaT>Umaf2V<eE3
+IAkJJIURLA?6XJZ>FJIz0c2
+R3
+!s105 mux2_sv_unit
+S1
+R0
+R4
+8mux2.sv
+Fmux2.sv
+L0 1
+R5
+r1
+!s85 0
+31
+R6
+R7
+R8
+!i113 0
+R9
+vregfile
+R1
+R2
+!i10b 1
+!s100 ^SJ2K4XdNj<DQiEPfiAl>2
+IOPS398ce_VioSR`e2@>hB1
+R3
+!s105 regfile_sv_unit
+S1
+R0
+R4
+8regfile.sv
+Fregfile.sv
+L0 1
+R5
+r1
+!s85 0
+31
+R6
+R7
+R8
+!i113 0
+R9
+vtb_top
+R1
+R14
+!i10b 1
+!s100 MaO>oVK[[:2_3DJmndRMc1
+I:=lo2B8dCY<@JL><F]leE3
+R3
+!s105 tb_top_sv_unit
+S1
+R15
+w1486276074
+8tb_top.sv
+Ftb_top.sv
+L0 2
+R5
+r1
+!s85 0
+31
+R16
+R17
+R18
+!i113 0
+R9
+Ttb_top_opt
+!s110 1486276065
+VIzg7?g=4X5T9nNj8^an`81
+04 6 4 work tb_top fast 0
+o+acc -work ../work
+ntb_top_opt
+OL;O;10.4c;61
+vtop
+R1
+R14
+!i10b 1
+!s100 mXI@TI?LLc9>U^fOcR:7^2
+IPF]Kd1Q2lliYYjIR]kHJ_0
+R3
+!s105 top_sv_unit
+S1
+R15
+w1486272451
+8top.sv
+Ftop.sv
+L0 1
+R5
+r1
+!s85 0
+31
+R16
+R17
+R18
+!i113 0
+R9

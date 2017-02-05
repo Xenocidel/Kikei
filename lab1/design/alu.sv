@@ -1,26 +1,24 @@
 module alu(
     input logic [31:0] A, B,
-    //input logic [3:0] opcode,
+    //input logic [3:0] ALUControl,
 	input logic [1:0] ALUControl,
-	output logic [3:0] ALUFlags, //NCZV
-    output logic [31:0] ALUResult
+	output logic [31:0] ALUResult,
+	output logic [3:0] ALUFlags
     );
-
-	logic N;	//negative
-	logic V;	//overflow
-	logic C;	//carry
-	logic Z;	//zero
+	
+	reg N, V, C, Z;
+	assign ALUFlags = {N, V, C, Z};
 
     always_comb 
     begin
         // Default values to be overwritten.
         // To prevent the accidental creation of latches when the values are not assigned
-        N = 1'b0;
-		V = 1'b0;
-        C = 1'b0;
-        Z = 1'b0;
         ALUResult = 32'd0;
-
+		N = ALUResult[31];
+		V = 1'b0;
+		C = 1'b0;
+		Z = ~|ALUResult;
+		
         case(ALUControl)
             // 4'b0000 :  // No OP
             // begin
