@@ -8,7 +8,7 @@ module tb_top();
 
 
     // instantiate device to be tested
-    top dut(clk, reset, WriteData, DataAdr, MemWrite);
+    top dut(clk, reset, DataAdr, WriteData, MemWrite);
 
 
     // initialize test
@@ -23,6 +23,17 @@ module tb_top();
         clk <= 1; # 5; clk <= 0; # 5;
     end
 
+	int clk_cnt;
+	always @(posedge clk) begin
+		clk_cnt++;
+		if (clk_cnt > 100) begin
+			for (int i = 0; i<16; i++) begin
+				$display("%g %x", i, tb_top.dut.arm.dp.rf.rf[i]);
+			end
+			$finish;
+		end
+	end
+	
     // check that 7 gets written to address 0x64
     // at end of program
     always @(negedge clk)
