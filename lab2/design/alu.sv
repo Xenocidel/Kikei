@@ -6,18 +6,20 @@ module alu(
 	output logic [3:0] ALUFlags
     );
 	
-	reg N, V, C, Z;
+	logic N, V, C, Z;
 	assign ALUFlags = {N, V, C, Z};
-
+	assign Z = ~|ALUResult;
+	assign N = ALUResult[31];
+	
     always_comb 
     begin
         // Default values to be overwritten.
         // To prevent the accidental creation of latches when the values are not assigned
         ALUResult = 32'd0;
-		N = ALUResult[31];
+		//N = ALUResult[31];
 		V = 1'b0;
 		//C = 1'b0;
-		Z = ~|ALUResult;
+		//Z = ~|ALUResult;
 		
         case(ALUControl)
 			4'b0000 :   // AND
@@ -25,7 +27,6 @@ module alu(
                 ALUResult = A & B;
                 C = 1'b0;
                 V = 1'b0;
-                Z = ~|ALUResult;
 				N = 1'b0;
             end
 			4'b0001 :   // XOR
@@ -33,7 +34,6 @@ module alu(
                 ALUResult = A ^ B;
                 C = 1'b0;
                 V = 1'b0;
-                Z = ~|ALUResult;
 				N = 1'b0;
             end
 			4'b0010 :   // SUB
@@ -45,7 +45,6 @@ module alu(
                     V = 1'b1;
                 else
                     V = 1'b0;
-                Z = ~|ALUResult;
 				N = ALUResult[31];
             end
 			4'b0011 :   // RSB (Reverse Sub)
@@ -57,7 +56,6 @@ module alu(
                     V = 1'b1;
                 else
                     V = 1'b0;
-                Z = ~|ALUResult;
 				N = ALUResult[31];
             end
             4'b0100 :   // Add
@@ -69,7 +67,6 @@ module alu(
                     V = 1'b1;
                 else
                     V = 1'b0;
-                Z = ~|ALUResult;
 				N = ALUResult[31];
             end
 			4'b0101 :   // Add with Carry
@@ -81,7 +78,6 @@ module alu(
                     V = 1'b1;
                 else
                     V = 1'b0;
-                Z = ~|ALUResult;
 				N = ALUResult[31];
             end
 			4'b0110 :   // Sub with Carry
@@ -93,7 +89,6 @@ module alu(
                     V = 1'b1;
                 else
                     V = 1'b0;
-                Z = ~|ALUResult;
 				N = ALUResult[31];
             end
 			4'b0111 :   // Reverse Sub with Carry
@@ -105,7 +100,6 @@ module alu(
                     V = 1'b1;
                 else
                     V = 1'b0;
-                Z = ~|ALUResult;
 				N = ALUResult[31];
             end
             // 4'b0011 :   // COMP
@@ -124,7 +118,6 @@ module alu(
                 ALUResult = A | B;
                 C = 1'b0;
                 V = 1'b0;
-                Z = ~|ALUResult;
 				N = 1'b0;
             end
             // 4'b0111 :   // NOT
