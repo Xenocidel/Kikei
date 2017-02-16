@@ -1,46 +1,35 @@
 module alu(
     input logic [31:0] A, B,
-    //input logic [3:0] ALUControl,
-	input logic [1:0] ALUControl,
+    input logic [3:0] ALUControl,
+	input logic [2:0] ShiftOp,	//used for determining which kind of shift instruction. For test/compare, this carries the S in right-most bit. 
+	//input logic [1:0] ALUControl,
 	output logic [31:0] ALUResult,
 	output logic [3:0] ALUFlags
     );
 	
-	reg N, V, C, Z;
+	logic N, V, C, Z;
 	assign ALUFlags = {N, V, C, Z};
-
+	
     always_comb 
     begin
         // Default values to be overwritten.
         // To prevent the accidental creation of latches when the values are not assigned
-        ALUResult = 32'd0;
-		N = ALUResult[31];
-		V = 1'b0;
-		C = 1'b0;
+		logic [31:0] tmp; //temporary variable for test/compare
+		logic [63:0] tmp2; //temp var for rotate
+		ALUResult = 32'd0;
 		Z = ~|ALUResult;
-		
-        case(ALUControl)
-            // 4'b0000 :  // No OP
-            // begin
-                // ALUResult = 32'd0;
-				// N = 1'b0;
-                // C = 1'b0;
-                // V = 1'b0;
-                // Z = 1'b0;
-            // end
-            2'b00 :   // Add
+		N = ALUResult[31];
+        
+		case(ALUControl)
+			4'b0000 :   // AND
             begin
-                {C,ALUResult} = A + B;
-                if (A[31] & B[31] & ~ALUResult[31])
-                    V = 1'b1;
-                else if (~A[31] & ~B[31] & ALUResult[31])
-                    V = 1'b1;
-                else
-                    V = 1'b0;
-                Z = 1'b0;
-				N = ALUResult[31];
+                ALUResult = A & B;
             end
-            2'b01 :   // SUB
+			4'b0001 :   // XOR
+            begin
+                ALUResult = A ^ B;
+            end
+			4'b0010 :   // SUB
             begin
                 {C,ALUResult} = A - B;
                 if (A[31] & ~B[31] & ~ALUResult[31])
@@ -49,74 +38,146 @@ module alu(
                     V = 1'b1;
                 else
                     V = 1'b0;
-                Z = 1'b0;
-				N = ALUResult[31];
             end
-            // 4'b0011 :   // COMP
-            // begin
-                // ALUResult = 32'd0;    
-                // C = 1'b0;
-                // V = 1'b0;
-                // if (A == B)
-                    // Z = 1'b1;
-                // else
-                    // Z = 1'b0;
-				// N = 1'b0;
-            // end
-            2'b10 :   // AND
+			4'b0011 :   // RSB (Reverse Sub)
             begin
-                ALUResult = A & B;
-                C = 1'b0;
-                V = 1'b0;
-                Z = 1'b0;
-				N = 1'b0;
+                {C,ALUResult} = B - A;
+                if (B[31] & ~A[31] & ~ALUResult[31])
+                    V = 1'b1;
+                else if (~B[31] & A[31] & ALUResult[31])
+                    V = 1'b1;
+                else
+                    V = 1'b0;
             end
-            2'b11 :   // OR
+            4'b0100 :   // Add
+            begin
+                {C,ALUResult} = A + B;
+                if (A[31] & B[31] & ~ALUResult[31])
+                    V = 1'b1;
+                else if (~A[31] & ~B[31] & ALUResult[31])
+                    V = 1'b1;
+                else
+                    V = 1'b0;
+            end
+			4'b0101 :   // Add with Carry
+            begin
+                {C,ALUResult} = A + B + C;
+                if (A[31] & B[31] & ~ALUResult[31])
+                    V = 1'b1;
+                else if (~A[31] & ~B[31] & ALUResult[31])
+                    V = 1'b1;
+                else
+                    V = 1'b0;
+            end
+			4'b0110 :   // Sub with Carry
+            begin
+                {C,ALUResult} = A - B - C;	//-C or +C?
+                if (A[31] & ~B[31] & ~ALUResult[31])
+                    V = 1'b1;
+                else if (~A[31] & B[31] & ALUResult[31])
+                    V = 1'b1;
+                else
+                    V = 1'b0;
+            end
+			4'b0111 :   // Reverse Sub with Carry
+            begin
+                {C,ALUResult} = B - A - C;	//-C or +C?
+                if (B[31] & ~A[31] & ~ALUResult[31])
+                    V = 1'b1;
+                else if (~B[31] & A[31] & ALUResult[31])
+                    V = 1'b1;
+                else
+                    V = 1'b0;
+            end
+			4'b1000 :	//Test
+			begin
+				if (ShiftOp[0] == 1)
+				begin
+					tmp = A & B;
+					N = tmp[31];
+					Z = ~|tmp;
+				end
+			end
+			4'b1001 :	//TEQ
+			begin
+				if (ShiftOp[0] == 1)
+				begin
+					tmp = A ^ B;
+					N = tmp[31];
+					Z = ~|tmp;
+				end
+			end
+			4'b1010 :	//Compare
+			begin
+				if (ShiftOp[0] == 1)
+				begin
+					tmp = A - B;
+					N = tmp[31];
+					Z = ~|tmp;
+				end
+			end
+			4'b1011 :	//Compare Negative
+			begin
+				if (ShiftOp[0] == 1)
+				begin
+					tmp = A + B;
+					N = tmp[31];
+					Z = ~|tmp;
+				end
+			end
+            4'b1100 :   // OR
             begin
                 ALUResult = A | B;
-                C = 1'b0;
-                V = 1'b0;
-                Z = 1'b0;
-				N = 1'b0;
             end
-            // 4'b0111 :   // NOT
-            // begin
-                // ALUResult = ~A;
-                // C = 1'b0;
-                // V = 1'b0;
-                // Z = 1'b0;
-				// N = 1'b0;
-            // end
-            // 4'b1000 :   // XOR
-            // begin
-                // ALUResult = A ^ B;
-                // C = 1'b0;
-                // V = 1'b0;
-                // Z = 1'b0;
-				// N = 1'b0;
-            // end
-            // 4'b1001 :   // SLL
-            // begin
-                // {C,ALUResult} = $unsigned(A) << $unsigned(B);
-                // V = 1'b0;
-                // Z = 1'b0;
-				// N = 1'b0;
-            // end
-            // 4'b1011 :   // MOV
-            // begin
-                // ALUResult = A;
-                // C = 1'b0;
-                // V = 1'b0;
-                // Z = 1'b0;
-				// N = 1'b0;
-            // end
-            default :
+            4'b1101 : 	// Shifts
+			begin
+				case(ShiftOp)
+				3'b000 : 	//MOV
+				begin
+					ALUResult = B;
+				end
+				3'b001 : 	//LSL
+				begin
+					ALUResult = A << B;
+				end
+				3'b010 : 	//LSR
+				begin
+					ALUResult = A >> B;
+				end
+				3'b011 : 	//ASR
+				begin
+					ALUResult = A >>> B;
+				end
+				3'b100 : 	//RRX
+				begin
+					{ALUResult, C} = {C, ALUResult};
+				end
+				3'b000 : 	//ROR
+				begin
+					if (B>0) begin
+						//ALUResult = {A[B-1:0], A[31:B]};
+						tmp2 = {A, A} >> B;
+						ALUResult = tmp2[31:0];
+					end
+					else if (B<0) begin
+						tmp2 = {A, A} >> B;
+						ALUResult = tmp2[63:32];
+					end
+					else
+						ALUResult = A;
+				end
+				default:
+				begin
+				end
+				endcase
+			end
+			4'b1110 : 	// Clear
+			begin
+				ALUResult = A & ~B;
+			end
+			4'b1111 :   // NOT
             begin
-                ALUResult = 32'd0;
-                C = 1'b0;
-                V = 1'b0;
-                Z = 1'b0;
-				N = 1'b0;
+                ALUResult = ~A;
             end
         endcase
     end
