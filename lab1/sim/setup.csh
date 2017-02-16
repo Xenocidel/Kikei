@@ -22,3 +22,4 @@ setenv design `pwd`/design
 setenv model `pwd`/model
 setenv verif `pwd`/verif
 cd $sim
+
