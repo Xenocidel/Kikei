@@ -1,0 +1,7 @@
+#!/bin/bash
+rm -r work
+(cd design && vlog -64 -sv -f rtl.cfg -work ../work)
+(cd verif && vlog -64 -sv -f tb.cfg -work ../work)
+(cd verif && vopt -64 tb_top -o tb_top_opt +acc -work ../work)
+(vsim -64 -c tb_top_opt -do sim/sim.do)
+(vsim -64 -gui -view waveform.wlf)
