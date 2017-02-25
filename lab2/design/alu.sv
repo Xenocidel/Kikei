@@ -1,10 +1,10 @@
 module alu(
     input logic [31:0] A, B,
     input logic [3:0] ALUControl,
-	input logic [2:0] ShiftOp,	//used for determining which kind of shift instruction. For test/compare, this carries the S in right-most bit. 
 	//input logic [1:0] ALUControl,
 	output logic [31:0] ALUResult,
-	output logic [3:0] ALUFlags
+	output logic [3:0] ALUFlags,
+	input logic [2:0] ShiftOp	//used for determining which kind of shift instruction. For test/compare, this carries the S in right-most bit. 
     );
 	
 	logic N, V, C, Z;
@@ -17,18 +17,22 @@ module alu(
 		logic [31:0] tmp; //temporary variable for test/compare
 		logic [63:0] tmp2; //temp var for rotate
 		ALUResult = 32'd0;
-		Z = ~|ALUResult;
-		N = ALUResult[31];
+		// Z = ~|ALUResult;
+		// N = ALUResult[31];
         
 		case(ALUControl)
 			4'b0000 :   // AND
             begin
                 ALUResult = A & B;
-            end
+				Z = ~|ALUResult;
+				N = ALUResult[31];
+			end
 			4'b0001 :   // XOR
             begin
                 ALUResult = A ^ B;
-            end
+				Z = ~|ALUResult;
+				N = ALUResult[31];
+			end
 			4'b0010 :   // SUB
             begin
                 {C,ALUResult} = A - B;
@@ -38,6 +42,8 @@ module alu(
                     V = 1'b1;
                 else
                     V = 1'b0;
+				Z = ~|ALUResult;
+				N = ALUResult[31];
             end
 			4'b0011 :   // RSB (Reverse Sub)
             begin
@@ -48,6 +54,8 @@ module alu(
                     V = 1'b1;
                 else
                     V = 1'b0;
+				Z = ~|ALUResult;
+				N = ALUResult[31];
             end
             4'b0100 :   // Add
             begin
@@ -58,6 +66,8 @@ module alu(
                     V = 1'b1;
                 else
                     V = 1'b0;
+				Z = ~|ALUResult;
+				N = ALUResult[31];
             end
 			4'b0101 :   // Add with Carry
             begin
@@ -68,6 +78,8 @@ module alu(
                     V = 1'b1;
                 else
                     V = 1'b0;
+				Z = ~|ALUResult;
+				N = ALUResult[31];
             end
 			4'b0110 :   // Sub with Carry
             begin
@@ -78,6 +90,8 @@ module alu(
                     V = 1'b1;
                 else
                     V = 1'b0;
+				Z = ~|ALUResult;
+				N = ALUResult[31];
             end
 			4'b0111 :   // Reverse Sub with Carry
             begin
@@ -88,6 +102,8 @@ module alu(
                     V = 1'b1;
                 else
                     V = 1'b0;
+				Z = ~|ALUResult;	
+				N = ALUResult[31];
             end
 			4'b1000 :	//Test
 			begin
@@ -128,6 +144,8 @@ module alu(
             4'b1100 :   // OR
             begin
                 ALUResult = A | B;
+				Z = ~|ALUResult;
+				N = ALUResult[31];
             end
             4'b1101 : 	// Shifts
 			begin
@@ -174,10 +192,14 @@ module alu(
 			4'b1110 : 	// Clear
 			begin
 				ALUResult = A & ~B;
+				Z = ~|ALUResult;
+				N = ALUResult[31];
 			end
 			4'b1111 :   // NOT
             begin
                 ALUResult = ~A;
+				Z = ~|ALUResult;
+				N = ALUResult[31];
             end
         endcase
     end
