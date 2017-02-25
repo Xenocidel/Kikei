@@ -189,7 +189,7 @@ module alu(
 			end
 			4'b1111 :   // NOT
             begin
-                ALUResult = ~A;
+                ALUResult = ~B;
 				Z = ~|ALUResult;
 				N = ALUResult[31];
             end
