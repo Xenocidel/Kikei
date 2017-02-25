@@ -190,6 +190,8 @@ module alu(
 				begin
 				end
 				endcase
+				Z = ~|ALUResult;
+				N = ALUResult[31];
 			end
 			4'b1110 : 	// Clear
 			begin

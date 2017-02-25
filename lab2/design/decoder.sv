@@ -10,7 +10,7 @@ module decoder(input  logic [1:0] Op,
 			   output logic [2:0] ShiftOp
 			   );
 	logic [9:0] controls;
-	logic 		Branch, ALUOp;
+	logic 		Branch, ALUOp, S;
 
 	// Main Decoder
 	always_comb
@@ -40,12 +40,24 @@ module decoder(input  logic [1:0] Op,
 			//4'b0010: ALUControl = 2'b01; // SUB
 			//4'b0000: ALUControl = 2'b10; // AND
 			//4'b1100: ALUControl = 2'b11; // ORR
-			default: ALUControl = Funct[4:1];
+			4'b1000,
+			4'b1001,
+			4'b1010,
+			4'b1011:
+			begin
+				S = 1;	//set S = 1 for TST, TEQ, CMP, CMN	
+				ALUControl = Funct[4:1];
+			end
+			default:
+			begin
+				S = Funct[0];
+				ALUControl = Funct[4:1];
+			end
 		endcase
 		
-	if (Funct[0]) 
+	if (S) //what does this do?
 	begin 
-		ShiftOp[0] = Funct[0];
+		ShiftOp[0] = S;
 	end
 	
 	// ALU Shift Functions
@@ -64,16 +76,12 @@ module decoder(input  logic [1:0] Op,
 		ShiftOp[2:0] = 3'b101;
 	end
 	
-	
-		
-		
-		// update flags if S bit is set (C & V only for arith)
-		
-
-		FlagW[1] = Funct[0];
-		FlagW[0] = Funct[0] &(ALUControl == 4'b0000 | ALUControl == 4'b0010);
-	end else begin
-		ALUControl = 4'b0000; // add for non-DP instructions
+		// update flags if S bit is set (C & V only for arith and compare)
+		FlagW[1] = S; // NZ flags
+		FlagW[0] = S &(ALUControl == 4'b0010 | ALUControl == 4'b0011 | ALUControl == 4'b0100 | ALUControl == 4'b0101 | ALUControl == 4'b0110 | ALUControl == 4'b0111 | ALUControl == 4'b1010 | ALUControl == 4'b1011);
+	end
+	else begin
+		ALUControl = 4'b0100; // ADD for non-DP instructions
 		FlagW = 2'b00; // don't update Flags
 	end
 
