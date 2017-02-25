@@ -109,39 +109,27 @@ module alu(
             end
 			4'b1000 :	//Test
 			begin
-				if (ShiftOp[0] == 1)
-				begin
-					tmp = A & B;
-					N = tmp[31];
-					Z = ~|tmp;
-				end
+				tmp = A & B;
+				N = tmp[31];
+				Z = ~|tmp;
 			end
 			4'b1001 :	//TEQ
 			begin
-				if (ShiftOp[0] == 1)
-				begin
-					tmp = A ^ B;
-					N = tmp[31];
-					Z = ~|tmp;
-				end
+				tmp = A ^ B;
+				N = tmp[31];
+				Z = ~|tmp;
 			end
 			4'b1010 :	//Compare
 			begin
-				if (ShiftOp[0] == 1)
-				begin
-					tmp = A - B;
-					N = tmp[31];
-					Z = ~|tmp;
-				end
+				tmp = A - B;
+				N = tmp[31];
+				Z = ~|tmp;
 			end
 			4'b1011 :	//Compare Negative
 			begin
-				if (ShiftOp[0] == 1)
-				begin
-					tmp = A + B;
-					N = tmp[31];
-					Z = ~|tmp;
-				end
+				tmp = A + B;
+				N = tmp[31];
+				Z = ~|tmp;
 			end
             4'b1100 :   // OR
             begin

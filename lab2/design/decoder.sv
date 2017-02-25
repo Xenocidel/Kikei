@@ -54,11 +54,6 @@ module decoder(input  logic [1:0] Op,
 				ALUControl = Funct[4:1];
 			end
 		endcase
-		
-	if (S) //what does this do?
-	begin 
-		ShiftOp[0] = S;
-	end
 	
 	// ALU Shift Functions
 	begin
