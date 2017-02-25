@@ -10,12 +10,12 @@ module datapath(input logic clk, reset,
 				output logic [31:0] PC,
 				input logic [31:0] Instr,
 				output logic [31:0] ALUResult, WriteData,
-				input logic [31:0] ReadData
+				input logic [31:0] ReadData,
+				logic [2:0] ShiftOp
 				);
 	logic [31:0] PCNext, PCPlus4, PCPlus8;
 	logic [31:0] ExtImm, SrcA, SrcB, Result;
 	logic [3:0] RA1, RA2;
-	logic [2:0] ShiftOp;
 
 	// next PC logic
 	mux2 #(32) pcmux(PCPlus4, Result, PCSrc, PCNext);
