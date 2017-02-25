@@ -17,8 +17,10 @@ module alu(
 		logic [31:0] tmp; //temporary variable for test/compare
 		logic [63:0] tmp2; //temp var for rotate
 		ALUResult = 32'd0;
-		// Z = ~|ALUResult;
-		// N = ALUResult[31];
+		N = ALUResult[31];
+		V = 1'b0;
+		C = 1'b0;
+		Z = ~|ALUResult;
         
 		case(ALUControl)
 			4'b0000 :   // AND
