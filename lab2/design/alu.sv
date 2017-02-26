@@ -160,7 +160,7 @@ module alu(
 				begin
 					{ALUResult, C} = {C, ALUResult};
 				end
-				3'b000 : 	//ROR
+				3'b101 : 	//ROR
 				begin
 					if (A>0) begin
 						//ALUResult = {A[B-1:0], A[31:B]};
