@@ -53,9 +53,9 @@ module tb_top();
         end
     end
 
-    // Limits sim time to 400ns
+    // Limits sim time to 2200ns
     initial begin
-    #400;
+    #2200;
     $finish;
     end
 endmodule

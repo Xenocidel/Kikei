@@ -31,13 +31,46 @@ module imem(
     // assign RAM[20] = 32'hE280200D;
     // assign RAM[21] = 32'hE280200A;
     // assign RAM[22] = 32'hE5802064;
-    
 	
 	//test program 1
 	// assign RAM[0] = 32'hE3A01002;	//MOV R1, #2
     // assign RAM[1] = 32'hE3A02003;	//MOV R2, #3
 	// assign RAM[2] = 32'hE1A03101;	//LSL R3, R1, #2
     // assign RAM[3] = 32'hE1A03211;	//LSL R3, R1, R2
+	
+	//test program 2
+	// assign RAM[0] = 32'hE3A000AA;
+    // assign RAM[1] = 32'hE3A01055;
+    // assign RAM[2] = 32'hE3A020FF;
+    // assign RAM[3] = 32'hE3A09000;
+    // assign RAM[4] = 32'hE1A03400;
+    // assign RAM[5] = 32'hE1833000;
+    // assign RAM[6] = 32'hE1A03403;
+    // assign RAM[7] = 32'hE1833000;
+    // assign RAM[8] = 32'hE1A03403;
+    // assign RAM[9] = 32'hE1833000;
+    // assign RAM[10] = 32'hE1A04402;
+    // assign RAM[11] = 32'hE1844002;
+    // assign RAM[12] = 32'hE1A04404;
+    // assign RAM[13] = 32'hE1844002;
+    // assign RAM[14] = 32'hE1A04404;
+    // assign RAM[15] = 32'hE1844002;
+    // assign RAM[16] = 32'hE1A05401;
+    // assign RAM[17] = 32'hE1855001;
+    // assign RAM[18] = 32'hE1A05405;
+    // assign RAM[19] = 32'hE1855001;
+    // assign RAM[20] = 32'hE1A05405;
+    // assign RAM[21] = 32'hE1855001;
+    // assign RAM[22] = 32'hE0036005;
+    // assign RAM[23] = 32'hE1160004;
+    // assign RAM[24] = 32'h02899001;
+    // assign RAM[25] = 32'hE1836005;
+    // assign RAM[26] = 32'hE3A00000;
+    // assign RAM[27] = 32'hE1360000;
+    // assign RAM[28] = 32'h12899001;
+    // assign RAM[29] = 32'hE1836005;
+    // assign RAM[30] = 32'hE0866003;
+    // assign RAM[31] = 32'hE24660A9;
 	
 	    // ALU Test
 	assign RAM[0] = 32'hE3A000AA;
@@ -71,7 +104,7 @@ module imem(
     assign RAM[28] = 32'h12899001;
     assign RAM[29] = 32'hE0836005;
     assign RAM[30] = 32'hE0866003;
-    assign RAM[31] = 32'hE24660A9;
+	assign RAM[31] = 32'hE24660A9;
     assign RAM[32] = 32'hE3A000AA;
     assign RAM[33] = 32'hE1866000;
     assign RAM[34] = 32'hE1560003;

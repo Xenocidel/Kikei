@@ -14,8 +14,9 @@ module datapath(input logic clk, reset,
 				logic [2:0] ShiftOp
 				);
 	logic [31:0] PCNext, PCPlus4, PCPlus8;
-	logic [31:0] ExtImm, SrcA, SrcB, Result;
-	logic [3:0] RA1, RA2;
+	logic [31:0] ExtImm, SrcA, SrcB, Result, RD1;
+	// logic [3:0] RA1A;
+	logic [3:0] RA1B, RA1, RA2;
 
 	// next PC logic
 	mux2 #(32) pcmux(PCPlus4, Result, PCSrc, PCNext);
@@ -24,15 +25,18 @@ module datapath(input logic clk, reset,
 	adder #(32) pcadd2(PCPlus4, 32'b100, PCPlus8);
 
 	// register file logic
-	mux2 #(4) ra1mux(Instr[19:16], 4'b1111, RegSrc[0], RA1);
-	mux2 #(4) ra2mux(Instr[3:0], Instr[15:12], RegSrc[1], RA2);
+	// mux2 #(4) ra1muxA(Instr[11:7], Instr[11:8], Instr[4], RA1A);	//shamt5 and Rs selected by Instr[4]
+	mux2 #(4) ra1muxB(Instr[19:16], 4'b1111, RegSrc[0], RA1B);	//Rn and R15 selected by B
+	mux2 #(4) ra1mux(Instr[11:8], RA1B, Instr[25:21]!=01101, RA1);	//result of above 2 selected by if its a non-MOV shift operation
+	mux2 #(4) ra2mux(Instr[3:0], Instr[15:12], RegSrc[1], RA2); //Rm and Rd selected by STR
 	regfile rf(clk, RegWrite, RA1, RA2,
 				Instr[15:12], Result, PCPlus8,
-				SrcA, WriteData);
+				RD1, WriteData);
 	mux2 #(32) resmux(ALUResult, ReadData, MemtoReg, Result);
 	extend ext(Instr[23:0], ImmSrc, ExtImm);
 
 	// ALU logic
+	mux2 #(32) srcamux(RD1, {Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11:7]}, Instr[4]==0 && Instr[25:21]==5'b01101, SrcA);
 	mux2 #(32) srcbmux(WriteData, ExtImm, ALUSrc, SrcB);
 	alu 		alu(SrcA, SrcB, ALUControl, ALUResult, ALUFlags, ShiftOp);
 endmodule
