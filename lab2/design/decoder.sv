@@ -1,12 +1,16 @@
 module decoder(input  logic [1:0] Op,
 			   input  logic [5:0] Funct,
 			   input  logic [3:0] Rd,
+			   input  logic [11:0] Src2,
 			   output logic [1:0] FlagW,
 			   output logic 	  PCS, RegW, MemW,
 			   output logic       MemtoReg, ALUSrc,
-			   output logic [1:0] ImmSrc, RegSrc, ALUControl);
+			   output logic [1:0] ImmSrc, RegSrc,
+			   output logic [3:0] ALUControl,
+			   output logic [2:0] ShiftOp
+			   );
 	logic [9:0] controls;
-	logic 		Branch, ALUOp;
+	logic 		Branch, ALUOp, S;
 
 	// Main Decoder
 	always_comb
@@ -32,19 +36,47 @@ module decoder(input  logic [1:0] Op,
 	always_comb
 	if (ALUOp) begin // which DP Instr?
 		case(Funct[4:1])
-			4'b0100: ALUControl = 2'b00; // ADD
-			4'b0010: ALUControl = 2'b01; // SUB
-			4'b0000: ALUControl = 2'b10; // AND
-			4'b1100: ALUControl = 2'b11; // ORR
-			default: ALUControl = 2'bx;  // unimplemented
+			//4'b0100: ALUControl = 2'b00; // ADD
+			//4'b0010: ALUControl = 2'b01; // SUB
+			//4'b0000: ALUControl = 2'b10; // AND
+			//4'b1100: ALUControl = 2'b11; // ORR
+			4'b1000,
+			4'b1001,
+			4'b1010,
+			4'b1011:
+			begin
+				S = 1;	//set S = 1 for TST, TEQ, CMP, CMN	
+				ALUControl = Funct[4:1];
+			end
+			default:
+			begin
+				S = Funct[0];
+				ALUControl = Funct[4:1];
+			end
 		endcase
-		
-		// update flags if S bit is set (C & V only for arith)
-		FlagW[1] = Funct[0];
-		FlagW[0] = Funct[0] &
-		(ALUControl == 2'b00 | ALUControl == 2'b01);
-	end else begin
-		ALUControl = 2'b00; // add for non-DP instructions
+	
+	// ALU Shift Functions
+	begin
+	if ((Funct[5] == 1'b1) || (Src2[11:4] == 8'b00000000))	//Move, ((Funct[5] == 1'b1)| (Src2[11:4] == 8'b00000000))
+		ShiftOp[2:0] = 3'b000;
+	else if ((Funct[5] == 1'b0) & (Src2[6:5] == 2'b00) & (Src2[11:4] != 8'b00000000))	//Log. Shift Left
+		ShiftOp[2:0] = 3'b001;
+	else if ((Funct[5] == 1'b0) & (Src2[6:5] == 2'b01))		//Log. Shift Right
+		ShiftOp[2:0] = 3'b010;
+	else if ((Funct[5] == 1'b0) & (Src2[6:5] == 2'b10))		//Arithmetic Shift Right
+		ShiftOp[2:0] = 3'b011;
+	else if ((Funct[5] == 1'b0) & (Src2[6:5] == 2'b11) & (Src2[11:4] == 8'b00000000))	//Rotate Right Extend
+		ShiftOp[2:0] = 3'b100;
+	else if ((Funct[5] == 1'b0) & (Src2[6:5] == 2'b11) & (Src2[11:4] != 8'b00000000))
+		ShiftOp[2:0] = 3'b101;
+	end
+	
+		// update flags if S bit is set (C & V only for arith and compare)
+		FlagW[1] = S; // NZ flags
+		FlagW[0] = S &(ALUControl == 4'b0010 | ALUControl == 4'b0011 | ALUControl == 4'b0100 | ALUControl == 4'b0101 | ALUControl == 4'b0110 | ALUControl == 4'b0111 | ALUControl == 4'b1010 | ALUControl == 4'b1011);
+	end
+	else begin
+		ALUControl = 4'b0100; // ADD for non-DP instructions
 		FlagW = 2'b00; // don't update Flags
 	end
 
