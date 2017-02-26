@@ -34,13 +34,12 @@ module imem(
     
 	
 	//test program 1
-	assign RAM[0] = 32'hE3A01002;	//MOV R1, #2
-    assign RAM[1] = 32'hE3A02003;	//MOV R2, #3
-	assign RAM[2] = 32'hE1A03101;	//LSL R3, R1, #2
-    assign RAM[3] = 32'hE1A03211;	//LSL R3, R1, R2
+	// assign RAM[0] = 32'hE3A01002;	//MOV R1, #2
+    // assign RAM[1] = 32'hE3A02003;	//MOV R2, #3
+	// assign RAM[2] = 32'hE1A03101;	//LSL R3, R1, #2
+    // assign RAM[3] = 32'hE1A03211;	//LSL R3, R1, R2
 	
 	    // ALU Test
-    /*
 	assign RAM[0] = 32'hE3A000AA;
     assign RAM[1] = 32'hE3A01055;
     assign RAM[2] = 32'hE3A020FF;
@@ -99,7 +98,6 @@ module imem(
     assign RAM[55] = 32'hE3A000FC;
     assign RAM[56] = 32'hE5809000;
     assign RAM[57] = 32'hEAFFFFFE;
-	*/
 
     // LDR STR Test
     /*
