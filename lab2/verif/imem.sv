@@ -31,7 +31,6 @@ module imem(
     // assign RAM[20] = 32'hE280200D;
     // assign RAM[21] = 32'hE280200A;
     // assign RAM[22] = 32'hE5802064;
-    
 	
 	//test program 1
 	// assign RAM[0] = 32'hE3A01002;	//MOV R1, #2
@@ -71,7 +70,7 @@ module imem(
     assign RAM[28] = 32'h12899001;
     assign RAM[29] = 32'hE0836005;
     assign RAM[30] = 32'hE0866003;
-    assign RAM[31] = 32'hE24660A9;
+	assign RAM[31] = 32'hE24660A9;
     assign RAM[32] = 32'hE3A000AA;
     assign RAM[33] = 32'hE1866000;
     assign RAM[34] = 32'hE1560003;

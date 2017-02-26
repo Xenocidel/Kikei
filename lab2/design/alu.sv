@@ -7,8 +7,8 @@ module alu(
 	input logic [2:0] ShiftOp	//used for determining which kind of shift instruction. For test/compare, this carries the S in right-most bit. 
     );
 	
-	logic N, V, C, Z;
-	assign ALUFlags = {N, V, C, Z};
+	logic N, Z, C, V;
+	assign ALUFlags = {N, Z, C, V};
 	
     always_comb 
     begin
@@ -146,33 +146,33 @@ module alu(
 				end
 				3'b001 : 	//LSL
 				begin
-					ALUResult = A << B;
+					ALUResult = B << A;
 				end
 				3'b010 : 	//LSR
 				begin
-					ALUResult = A >> B;
+					ALUResult = B >> A;
 				end
 				3'b011 : 	//ASR
 				begin
-					ALUResult = A >>> B;
+					ALUResult = B >>> A;
 				end
 				3'b100 : 	//RRX
 				begin
 					{ALUResult, C} = {C, ALUResult};
 				end
-				3'b000 : 	//ROR
+				3'b101 : 	//ROR
 				begin
-					if (B>0) begin
+					if (A>0) begin
 						//ALUResult = {A[B-1:0], A[31:B]};
-						tmp2 = {A, A} >> B;
+						tmp2 = {B, B} >> A;
 						ALUResult = tmp2[31:0];
 					end
-					else if (B<0) begin
-						tmp2 = {A, A} >> B;
+					else if (A<0) begin
+						tmp2 = {B, B} >> A;
 						ALUResult = tmp2[63:32];
 					end
 					else
-						ALUResult = A;
+						ALUResult = B;
 				end
 				default:
 				begin
