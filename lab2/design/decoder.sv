@@ -9,7 +9,7 @@ module decoder(input  logic [1:0] Op,
 			   output logic [3:0] ALUControl,
 			   output logic [2:0] ShiftOp,
 				 output logic [3:0] Rm, Rs,
-				 output logic [4:0] shamt5
+				 output logic Src2Val
 			   );
 	logic [9:0] controls;
 	logic 		Branch, ALUOp, S;
@@ -62,45 +62,75 @@ module decoder(input  logic [1:0] Op,
 	if ((Funct[5] == 1'b1) || (Src2[11:4] == 8'b00000000))	//Move, ((Funct[5] == 1'b1)| (Src2[11:4] == 8'b00000000))
 		ShiftOp[2:0] = 3'b000;
 	else if ((Funct[5] == 1'b0) & (Src2[6:5] == 2'b00) & (Src2[11:4] != 8'b00000000))	//Log. Shift Left
-		ShiftOp[2:0] = 3'b001;
-		if (Src2[5] == 0)
-			shamt5 = Src2[11:7];
-			Rm = Src2[3:0];
-		else if (Src2[5] = 1)
-			Rs = Src2[11:8];
-			Rm = Src2[3:0];
+		begin
+			ShiftOp[2:0] = 3'b001;
+			Src2Val = Src2[4];
+			if (Src2[4] == 0)
+			begin
+				Rm = Src2[3:0];
+			end
+			else if (Src2[4] == 1)
+			begin
+				Rs = Src2[11:8];
+				Rm = Src2[3:0];
+			end
+		end
 	else if ((Funct[5] == 1'b0) & (Src2[6:5] == 2'b01))		//Log. Shift Right
+	begin
 		ShiftOp[2:0] = 3'b010;
-		if (Src2[5] == 0)
-			shamt5 = Src2[11:7];
+		Src2Val = Src2[4];
+		if (Src2[4] == 0)
+		begin
 			Rm = Src2[3:0];
-		else if (Src2[5] = 1)
+		end
+		else if (Src2[4] == 1)
+		begin
 			Rs = Src2[11:8];
 			Rm = Src2[3:0];
+		end
+	end
 	else if ((Funct[5] == 1'b0) & (Src2[6:5] == 2'b10))		//Arithmetic Shift Right
+	begin
 		ShiftOp[2:0] = 3'b011;
-		if (Src2[5] == 0)
-			shamt5 = Src2[11:7];
+		Src2Val = Src2[4];
+		if (Src2[4] == 0)
+		begin
 			Rm = Src2[3:0];
-		else if (Src2[5] = 1)
+		end
+		else if (Src2[4] == 1)
+		begin
 			Rs = Src2[11:8];
 			Rm = Src2[3:0];
+		end
+	end
 	else if ((Funct[5] == 1'b0) & (Src2[6:5] == 2'b11) & (Src2[11:4] == 8'b00000000))	//Rotate Right Extend
+	begin
 		ShiftOp[2:0] = 3'b100;
-		if (Src2[5] == 0)
-			shamt5 = Src2[11:7];
+		Src2Val = Src2[4];
+		if (Src2[4] == 0)
+		begin
 			Rm = Src2[3:0];
-		else if (Src2[5] = 1)
+		end
+		else if (Src2[4] == 1)
+		begin
 			Rs = Src2[11:8];
 			Rm = Src2[3:0];
+		end
+	end
 	else if ((Funct[5] == 1'b0) & (Src2[6:5] == 2'b11) & (Src2[11:4] != 8'b00000000)) //Rotate Right
+	begin
 		ShiftOp[2:0] = 3'b101;
-		if (Src2[5] == 0)
-			shamt5 = Src2[11:7];
-			Rm = Src2[3:0];
-		else if (Src2[5] = 1)
-			Rs = Src2[11:8];
-			Rm = Src2[3:0];
+		Src2Val = Src2[4];
+		if (Src2[4] == 0)
+			begin
+				Rm = Src2[3:0];
+			end
+			else if (Src2[4] == 1)
+			begin
+				Rs = Src2[11:8];
+				Rm = Src2[3:0];
+			end
+		end
 	end
 
 		// update flags if S bit is set (C & V only for arith and compare)
