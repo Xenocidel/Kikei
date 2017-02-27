@@ -8,8 +8,7 @@ module decoder(input  logic [1:0] Op,
 			   output logic [1:0] ImmSrc, RegSrc,
 			   output logic [3:0] ALUControl,
 			   output logic [2:0] ShiftOp,
-				 output logic [3:0] Rm, Rs,
-				 output logic Src2Val
+			   output logic wr14
 			   );
 	logic [9:0] controls;
 	logic 		Branch, ALUOp, S;
@@ -26,7 +25,9 @@ module decoder(input  logic [1:0] Op,
 								 // STR
 				   else 		 controls = 10'b1001110100;
 								 // B
-			2'b10: 			 	 controls = 10'b0110100010;
+			2'b10: begin 			 	 controls = 10'b0110100010;
+				assign wr14 = (controls[1] == 1 && Funct[4] == 1) ? 1 : 0;
+				end
 								// Unimplemented
 			default: 			 controls = 10'bx;
 	endcase
@@ -64,73 +65,73 @@ module decoder(input  logic [1:0] Op,
 	else if ((Funct[5] == 1'b0) & (Src2[6:5] == 2'b00) & (Src2[11:4] != 8'b00000000))	//Log. Shift Left
 		begin
 			ShiftOp[2:0] = 3'b001;
-			Src2Val = Src2[4];
-			if (Src2[4] == 0)
-			begin
-				Rm = Src2[3:0];
-			end
-			else if (Src2[4] == 1)
-			begin
-				Rs = Src2[11:8];
-				Rm = Src2[3:0];
-			end
+			// Src2Val = Src2[4];
+			// if (Src2[4] == 0)
+			// begin
+				// Rm = Src2[3:0];
+			// end
+			// else if (Src2[4] == 1)
+			// begin
+				// Rs = Src2[11:8];
+				// Rm = Src2[3:0];
+			// end
 		end
 	else if ((Funct[5] == 1'b0) & (Src2[6:5] == 2'b01))		//Log. Shift Right
 	begin
 		ShiftOp[2:0] = 3'b010;
-		Src2Val = Src2[4];
-		if (Src2[4] == 0)
-		begin
-			Rm = Src2[3:0];
-		end
-		else if (Src2[4] == 1)
-		begin
-			Rs = Src2[11:8];
-			Rm = Src2[3:0];
-		end
+		// Src2Val = Src2[4];
+		// if (Src2[4] == 0)
+		// begin
+			// Rm = Src2[3:0];
+		// end
+		// else if (Src2[4] == 1)
+		// begin
+			// Rs = Src2[11:8];
+			// Rm = Src2[3:0];
+		// end
 	end
 	else if ((Funct[5] == 1'b0) & (Src2[6:5] == 2'b10))		//Arithmetic Shift Right
 	begin
 		ShiftOp[2:0] = 3'b011;
-		Src2Val = Src2[4];
-		if (Src2[4] == 0)
-		begin
-			Rm = Src2[3:0];
-		end
-		else if (Src2[4] == 1)
-		begin
-			Rs = Src2[11:8];
-			Rm = Src2[3:0];
-		end
+		// Src2Val = Src2[4];
+		// if (Src2[4] == 0)
+		// begin
+			// Rm = Src2[3:0];
+		// end
+		// else if (Src2[4] == 1)
+		// begin
+			// Rs = Src2[11:8];
+			// Rm = Src2[3:0];
+		// end
 	end
 	else if ((Funct[5] == 1'b0) & (Src2[6:5] == 2'b11) & (Src2[11:4] == 8'b00000000))	//Rotate Right Extend
 	begin
 		ShiftOp[2:0] = 3'b100;
-		Src2Val = Src2[4];
-		if (Src2[4] == 0)
-		begin
-			Rm = Src2[3:0];
-		end
-		else if (Src2[4] == 1)
-		begin
-			Rs = Src2[11:8];
-			Rm = Src2[3:0];
-		end
+		// Src2Val = Src2[4];
+		// if (Src2[4] == 0)
+		// begin
+			// Rm = Src2[3:0];
+		// end
+		// else if (Src2[4] == 1)
+		// begin
+			// Rs = Src2[11:8];
+			// Rm = Src2[3:0];
+		// end
 	end
 	else if ((Funct[5] == 1'b0) & (Src2[6:5] == 2'b11) & (Src2[11:4] != 8'b00000000)) //Rotate Right
 	begin
 		ShiftOp[2:0] = 3'b101;
-		Src2Val = Src2[4];
-		if (Src2[4] == 0)
-			begin
-				Rm = Src2[3:0];
-			end
-			else if (Src2[4] == 1)
-			begin
-				Rs = Src2[11:8];
-				Rm = Src2[3:0];
-			end
-		end
+		// Src2Val = Src2[4];
+		// if (Src2[4] == 0)
+			// begin
+				// Rm = Src2[3:0];
+			// end
+			// else if (Src2[4] == 1)
+			// begin
+				// Rs = Src2[11:8];
+				// Rm = Src2[3:0];
+			// end
+	end
 	end
 	
 		// update flags if S bit is set or if TST/CMP (C & V only for arith and compare, see https://www.scss.tcd.ie/~waldroj/3d1/arm_arm.pdf page 50)
