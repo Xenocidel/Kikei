@@ -142,19 +142,62 @@ module alu(
 				case(ShiftOp)
 				3'b000 : 	//MOV
 				begin
+					C = C;	//no change in C flag
 					ALUResult = B;
 				end
 				3'b001 : 	//LSL
 				begin
-					ALUResult = B << A;
+					if (A[7:0] == 0) begin
+						C = C;
+						ALUResult = B;
+					end
+					else if (A[7:0] == 32) begin
+						C = B[0];
+						ALUResult = 0;
+					end
+					else if (A[7:0] > 32) begin
+						C = 0;
+						ALUResult = 0;
+					end
+					else begin
+						C = B[32-A];
+						ALUResult = B << A[7:0];
+					end
 				end
 				3'b010 : 	//LSR
 				begin
-					ALUResult = B >> A;
+					if (A[7:0] == 0) begin
+						ALUResult = B;
+						C = C;
+					end else if (A[7:0] == 32) begin
+						ALUResult = 0;
+						C = B[31];
+					end else if (A[7:0] > 32) begin
+						ALUResult = 0;
+						C = 0;
+					end else begin
+						C = B[A[7:0]-1];
+						ALUResult = B >> A;
+					end
 				end
 				3'b011 : 	//ASR
 				begin
-					ALUResult = B >>> A;
+					if (A[7:0] == 0) begin
+						ALUResult = B;
+						C = C;
+					end else if (A[7:0] >= 32) begin
+						if (B[31] == 0) begin
+							ALUResult = 0;
+							C = B[31];
+						end
+						else begin
+							ALUResult = 32'hFFFFFFFF;
+							C = B[31];
+						end
+					end else begin
+						C = B[A[7:0] - 1];
+						ALUResult = B >>> A;
+					end
 				end
 				3'b100 : 	//RRX
 				begin
@@ -162,17 +205,29 @@ module alu(
 				end
 				3'b101 : 	//ROR
 				begin
-					if (A>0) begin
-						//ALUResult = {A[B-1:0], A[31:B]};
-						tmp2 = {B, B} >> A;
+					if (A[7:0] == 0) begin
+						C = C;
+						ALUResult = B;
+					end else if (A[4:0] == 0) begin
+						C = B[31];
+						ALUResult = B;
+					end else begin
+						C = B[A[4:0]-1];
+						tmp2 = {B, B} >> A[4:0];
 						ALUResult = tmp2[31:0];
 					end
-					else if (A<0) begin
-						tmp2 = {B, B} >> A;
-						ALUResult = tmp2[63:32];
-					end
-					else
-						ALUResult = B;
+				
+					// if (A>0) begin
+						// ALUResult = {A[B-1:0], A[31:B]};
+						// tmp2 = {B, B} >> A;
+						// ALUResult = tmp2[31:0];
+					// end
+					// else if (A<0) begin
+						// tmp2 = {B, B} >> A;
+						// ALUResult = tmp2[63:32];
+					// end
+					// else
+						// ALUResult = B;
 				end
 				default:
 				begin

@@ -14,7 +14,7 @@ module datapath(input logic clk, reset,
 				logic [2:0] ShiftOp
 				);
 	logic [31:0] PCNext, PCPlus4, PCPlus8;
-	logic [31:0] ExtImm, SrcA, SrcB, Result, RD1;
+	logic [31:0] ExtImm, SrcA, SrcAPre, SrcB, Result, RD1;
 	// logic [3:0] RA1A;
 	logic [3:0] RA1B, RA1, RA2;
 
@@ -27,7 +27,7 @@ module datapath(input logic clk, reset,
 	// register file logic
 	// mux2 #(4) ra1muxA(Instr[11:7], Instr[11:8], Instr[4], RA1A);	//shamt5 and Rs selected by Instr[4]
 	mux2 #(4) ra1muxB(Instr[19:16], 4'b1111, RegSrc[0], RA1B);	//Rn and R15 selected by B
-	mux2 #(4) ra1mux(Instr[11:8], RA1B, Instr[25:21]!=01101, RA1);	//result of above 2 selected by if its a non-MOV shift operation
+	mux2 #(4) ra1mux(Instr[11:8], RA1B, Instr[25:21]!=01101, RA1);	//result of above 2 selected by if its not a non-MOV shift operation
 	mux2 #(4) ra2mux(Instr[3:0], Instr[15:12], RegSrc[1], RA2); //Rm and Rd selected by STR
 	regfile rf(clk, RegWrite, RA1, RA2,
 				Instr[15:12], Result, PCPlus8,
@@ -36,7 +36,8 @@ module datapath(input logic clk, reset,
 	extend ext(Instr[23:0], ImmSrc, ExtImm);
 
 	// ALU logic
-	mux2 #(32) srcamux(RD1, {Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11:7]}, Instr[4]==0 && Instr[25:21]==5'b01101, SrcA);
-	mux2 #(32) srcbmux(WriteData, ExtImm, ALUSrc, SrcB);
+	mux2 #(32) srcamux(RD1, {Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11:7]}, Instr[4]==0 && Instr[25:21]==5'b01101, SrcAPre);	//shamt5 and Rn/R15 selected by non-MOV shift op
+	mux2 #(32) rightshiftmux(SrcAPre, 32'b00000000000000000000000000100000, (ShiftOp==011 || ShiftOp==100 || ShiftOp == 110)&&(Instr[4]==0 && Instr[25:21]==5'b01101), SrcA); //shamt5 and 32 selected by right shift op
+	mux2 #(32) srcbmux(WriteData, ExtImm, ALUSrc, SrcB);	
 	alu 		alu(SrcA, SrcB, ALUControl, ALUResult, ALUFlags, ShiftOp);
 endmodule
