@@ -23,7 +23,7 @@ module decoder(input  logic [1:0] Op,
 								 // LDR
 			2'b01: if (Funct[0]) controls = 10'b0001111000;
 								 // STR
-				   else 		 controls = 10'b1001110100;
+				   else controls = 10'b1001110100;
 								 // B
 			2'b10: begin 			 	 controls = 10'b0110100010;
 				assign wr14 = (controls[1] == 1 && Funct[4] == 1) ? 1 : 0;
@@ -133,7 +133,7 @@ module decoder(input  logic [1:0] Op,
 			// end
 	end
 	end
-	
+
 		// update flags if S bit is set or if TST/CMP (C & V only for arith and compare, see https://www.scss.tcd.ie/~waldroj/3d1/arm_arm.pdf page 50)
 		FlagW[1] = S | (ALUControl == 4'b1000 | ALUControl == 4'b1001 | ALUControl == 4'b1010 | ALUControl == 4'b1011); // NZ flags
 		FlagW[0] = S &(ALUControl == 4'b0010 | ALUControl == 4'b0011 | ALUControl == 4'b0100 | ALUControl == 4'b0101 | ALUControl == 4'b0110 | ALUControl == 4'b0111 | ALUControl == 4'b1000 | ALUControl == 4'b1001 | ALUControl == 4'b1010 | ALUControl == 4'b1011);

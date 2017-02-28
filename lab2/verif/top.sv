@@ -11,9 +11,9 @@ module top(
     // instantiate processor and memories
     arm  arm(clk, reset, PC, Instr, MemWrite, DataAdr, WriteData, ReadData);
 	// arm  arm(clk, reset, PC, Instr, MemWrite, ALUResult, WriteData, ReadData);
-	
+
     imem imem(PC, Instr);
-    
+
     dmem dmem(clk, MemWrite, DataAdr, WriteData, ReadData);
-    
+
 endmodule
