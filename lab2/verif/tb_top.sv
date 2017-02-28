@@ -26,7 +26,7 @@ module tb_top();
 	int clk_cnt;
 	always @(posedge clk) begin
 		clk_cnt++;
-		if (clk_cnt > 100) begin
+		if (clk_cnt > 300) begin
 			for (int i = 0; i<16; i++) begin
 				$display("%g %x", i, tb_top.dut.arm.dp.rf.rf[i]);
 			end
@@ -53,9 +53,9 @@ module tb_top();
         // end
     // end
 
-    // Limits sim time to 2200ns
+    // Limits sim time to 30000ns
     initial begin
-    #2200;
+    #30000;
     $finish;
     end
 endmodule

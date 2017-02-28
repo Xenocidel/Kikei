@@ -4,7 +4,8 @@ module alu(
 	//input logic [1:0] ALUControl,
 	output logic [31:0] ALUResult,
 	output logic [3:0] ALUFlags,
-	input logic [2:0] ShiftOp	//used for determining which kind of shift instruction. For test/compare, this carries the S in right-most bit. 
+	input logic [2:0] ShiftOp,	//used for determining which kind of shift instruction. For test/compare, this carries the S in right-most bit. 
+	input logic PrevC
     );
 	
 	logic N, Z, C, V;
@@ -73,7 +74,7 @@ module alu(
             end
 			4'b0101 :   // Add with Carry
             begin
-                {C,ALUResult} = A + B + C;
+                {C,ALUResult} = A + B + PrevC;
                 if (A[31] & B[31] & ~ALUResult[31])
                     V = 1'b1;
                 else if (~A[31] & ~B[31] & ALUResult[31])
@@ -85,7 +86,7 @@ module alu(
             end
 			4'b0110 :   // Sub with Carry
             begin
-                {C,ALUResult} = A - B - C;	//-C or +C?
+                {C,ALUResult} = A - B - ~PrevC;
                 if (A[31] & ~B[31] & ~ALUResult[31])
                     V = 1'b1;
                 else if (~A[31] & B[31] & ALUResult[31])
@@ -97,7 +98,7 @@ module alu(
             end
 			4'b0111 :   // Reverse Sub with Carry
             begin
-                {C,ALUResult} = B - A - C;	//-C or +C?
+                {C,ALUResult} = B - A - ~PrevC;	//-C or +C?
                 if (B[31] & ~A[31] & ~ALUResult[31])
                     V = 1'b1;
                 else if (~B[31] & A[31] & ALUResult[31])
@@ -142,37 +143,92 @@ module alu(
 				case(ShiftOp)
 				3'b000 : 	//MOV
 				begin
+					C = PrevC;	//no change in C flag
 					ALUResult = B;
 				end
 				3'b001 : 	//LSL
 				begin
-					ALUResult = B << A;
+					if (A[7:0] == 0) begin
+						C = PrevC;
+						ALUResult = B;
+					end
+					else if (A[7:0] == 32) begin
+						C = B[0];
+						ALUResult = 0;
+					end
+					else if (A[7:0] > 32) begin
+						C = 0;
+						ALUResult = 0;
+					end
+					else begin
+						C = B[32-A];
+						ALUResult = B << A[7:0];
+					end
 				end
 				3'b010 : 	//LSR
 				begin
-					ALUResult = B >> A;
+					if (A[7:0] == 0) begin
+						ALUResult = B;
+						C = PrevC;
+					end else if (A[7:0] == 32) begin
+						ALUResult = 0;
+						C = B[31];
+					end else if (A[7:0] > 32) begin
+						ALUResult = 0;
+						C = 0;
+					end else begin
+						C = B[A[7:0]-1];
+						ALUResult = B >> A;
+					end
 				end
 				3'b011 : 	//ASR
 				begin
-					ALUResult = B >>> A;
+					if (A[7:0] == 0) begin
+						ALUResult = B;
+						C = PrevC;
+					end else if (A[7:0] >= 32) begin
+						if (B[31] == 0) begin
+							ALUResult = 0;
+							C = B[31];
+						end
+						else begin
+							ALUResult = 32'hFFFFFFFF;
+							C = B[31];
+						end
+					end else begin
+						C = B[A[7:0] - 1];
+						ALUResult = B >>> A;
+					end
 				end
 				3'b100 : 	//RRX
 				begin
-					{ALUResult, C} = {C, ALUResult};
+					{ALUResult, C} = {PrevC, ALUResult};
 				end
 				3'b101 : 	//ROR
 				begin
-					if (A>0) begin
-						//ALUResult = {A[B-1:0], A[31:B]};
-						tmp2 = {B, B} >> A;
+					if (A[7:0] == 0) begin
+						C = PrevC;
+						ALUResult = B;
+					end else if (A[4:0] == 0) begin
+						C = B[31];
+						ALUResult = B;
+					end else begin
+						C = B[A[4:0]-1];
+						tmp2 = {B, B} >> A[4:0];
 						ALUResult = tmp2[31:0];
 					end
-					else if (A<0) begin
-						tmp2 = {B, B} >> A;
-						ALUResult = tmp2[63:32];
-					end
-					else
-						ALUResult = B;
+				
+					// if (A>0) begin
+						// ALUResult = {A[B-1:0], A[31:B]};
+						// tmp2 = {B, B} >> A;
+						// ALUResult = tmp2[31:0];
+					// end
+					// else if (A<0) begin
+						// tmp2 = {B, B} >> A;
+						// ALUResult = tmp2[63:32];
+					// end
+					// else
+						// ALUResult = B;
 				end
 				default:
 				begin
