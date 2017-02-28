@@ -8,7 +8,8 @@ module decoder(input  logic [1:0] Op,
 			   output logic [1:0] ImmSrc, RegSrc,
 			   output logic [3:0] ALUControl,
 			   output logic [2:0] ShiftOp,
-			   output logic wr14
+			   output logic wr14,
+				 output logic be
 			   );
 	logic [9:0] controls;
 	logic 		Branch, ALUOp, S;
@@ -21,9 +22,25 @@ module decoder(input  logic [1:0] Op,
 								 // Data-processing register
 				   else 		 controls = 10'b0000001001;
 								 // LDR
-			2'b01: if (Funct[0]) controls = 10'b0001111000;
+			2'b01: if (Funct[0]) begin
+			 controls = 10'b0001111000;
+			 if(Funct[2]) begin
+			 be = 1'b1;
+			 end
+			 else begin
+			 be = 1'b0;
+			 end
+			 end
 								 // STR
-				   else controls = 10'b1001110100;
+				   else begin
+					 controls = 10'b1001110100;
+					 if(Funct[2]) begin
+					 be = 1'b1;
+					 end
+					 else begin
+					 be = 1'b0;
+					 end
+					 end
 								 // B
 			2'b10: begin 			 	 controls = 10'b0110100010;
 				assign wr14 = (controls[1] == 1 && Funct[4] == 1) ? 1 : 0;

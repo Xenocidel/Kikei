@@ -3,7 +3,8 @@ module arm(input logic clk, reset,
 		input logic [31:0] Instr,
 		output logic MemWrite,
 		output logic [31:0] ALUResult, WriteData,
-		input logic [31:0] ReadData);
+		input logic [31:0] ReadData,
+		output logic be);
 	logic [3:0] ALUFlags, ALUControl;
 	logic RegWrite,
 			ALUSrc, MemtoReg, PCSrc;
@@ -14,7 +15,7 @@ module arm(input logic clk, reset,
 	controller c(clk, reset, Instr, ALUFlags,
 			RegSrc, RegWrite, ImmSrc,
 			ALUSrc, ALUControl,
-			MemWrite, MemtoReg, PCSrc, ShiftOp, wr14, PrevC);
+			MemWrite, MemtoReg, PCSrc, ShiftOp, wr14, PrevC, be);
 	datapath dp(clk, reset,
 			RegSrc, RegWrite, ImmSrc,
 			ALUSrc, ALUControl,
