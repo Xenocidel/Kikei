@@ -136,7 +136,7 @@ module decoder(input  logic [1:0] Op,
 	
 		// update flags if S bit is set or if TST/CMP (C & V only for arith and compare, see https://www.scss.tcd.ie/~waldroj/3d1/arm_arm.pdf page 50)
 		FlagW[1] = S | (ALUControl == 4'b1000 | ALUControl == 4'b1001 | ALUControl == 4'b1010 | ALUControl == 4'b1011); // NZ flags
-		FlagW[0] = S &(ALUControl == 4'b0010 | ALUControl == 4'b0011 | ALUControl == 4'b0100 | ALUControl == 4'b0101 | ALUControl == 4'b0110 | ALUControl == 4'b0111 | ALUControl == 4'b1010 | ALUControl == 4'b1011);
+		FlagW[0] = S &(ALUControl == 4'b0010 | ALUControl == 4'b0011 | ALUControl == 4'b0100 | ALUControl == 4'b0101 | ALUControl == 4'b0110 | ALUControl == 4'b0111 | ALUControl == 4'b1000 | ALUControl == 4'b1001 | ALUControl == 4'b1010 | ALUControl == 4'b1011);
 	end
 	else begin
 		ALUControl = 4'b0100; // ADD for non-DP instructions
