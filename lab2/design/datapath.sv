@@ -12,13 +12,14 @@ module datapath(input logic clk, reset,
 				output logic [31:0] ALUResult, WriteData,
 				input logic [31:0] ReadData,
 				logic [2:0] ShiftOp,
-				input logic wr14	//if BL
+				input logic wr14,	//if BL
+				logic PrevC
 				);
 	logic [31:0] PCNext, PCPlus4, PCPlus8;
-	logic [31:0] ExtImm, SrcA, SrcAPre, SrcB, Result, RD1;
+	logic [31:0] ExtImm, SrcA, SrcAPre, SrcB, SrcBPre, Result, RD1;
 	// logic [3:0] RA1A;
 	logic [3:0] RA1B, RA1, RA2;
-
+	
 	// next PC logic
 	mux2 #(32) pcmux(PCPlus4, Result, PCSrc, PCNext);
 	flopr #(32) pcreg(clk, reset, PCNext, PC);
@@ -42,6 +43,7 @@ module datapath(input logic clk, reset,
 		(ShiftOp==3'b010 || ShiftOp==3'b011 || ShiftOp == 3'b101)&& Instr[4]==0 && Instr[25:21]==5'b01101 && Instr[11:7]==5'b00000,
 		SrcAPre); //32 selected only when a right shift immediate has shamt5 = 0
 	mux2 #(32) srcamux(RD1, SrcAPre, Instr[4]==0 && Instr[25:21]==5'b01101, SrcA);	//Rn/R15 and shamt5 selected by non-MOV shift op
-	mux2 #(32) srcbmux(WriteData, ExtImm, ALUSrc, SrcB);	
-	alu 		alu(SrcA, SrcB, ALUControl, ALUResult, ALUFlags, ShiftOp);
+	mux2 #(32) srcbmux(WriteData, ExtImm, ALUSrc, SrcBPre);	//selected by B
+	mux2 #(32) srcbimmmux(SrcBPre, {24'b0, Instr[7:0]} >> (Instr[11:8]*2), Instr[27:25]==001, SrcB); //imm8 ror rot*2 for Immediate instructions selected if immediate data processing
+	alu 		alu(SrcA, SrcB, ALUControl, ALUResult, ALUFlags, ShiftOp, PrevC);
 endmodule
