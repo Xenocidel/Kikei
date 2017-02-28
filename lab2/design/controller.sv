@@ -9,7 +9,8 @@ module controller(input logic clk, reset,
 				output logic MemWrite, MemtoReg,
 				output logic PCSrc,
 				logic [2:0] ShiftOp,
-				logic wr14
+				logic wr14,
+				logic PrevC
 				);
 logic [1:0] FlagW;
 logic 		PCS, RegW, MemW;
@@ -18,5 +19,5 @@ decoder dec(Instr[27:26], Instr[25:20], Instr[15:12], Instr[11:0],
 			MemtoReg, ALUSrc, ImmSrc, RegSrc, ALUControl, ShiftOp, wr14);
 condlogic cl(clk, reset, Instr[31:28], ALUFlags,
 			FlagW, PCS, RegW, MemW,
-			PCSrc, RegWrite, MemWrite);
+			PCSrc, RegWrite, MemWrite, PrevC);
 endmodule

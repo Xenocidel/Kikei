@@ -4,7 +4,8 @@ module alu(
 	//input logic [1:0] ALUControl,
 	output logic [31:0] ALUResult,
 	output logic [3:0] ALUFlags,
-	input logic [2:0] ShiftOp	//used for determining which kind of shift instruction. For test/compare, this carries the S in right-most bit. 
+	input logic [2:0] ShiftOp,	//used for determining which kind of shift instruction. For test/compare, this carries the S in right-most bit. 
+	input logic PrevC
     );
 	
 	logic N, Z, C, V;
@@ -73,7 +74,7 @@ module alu(
             end
 			4'b0101 :   // Add with Carry
             begin
-                {C,ALUResult} = A + B + C;
+                {C,ALUResult} = A + B + PrevC;
                 if (A[31] & B[31] & ~ALUResult[31])
                     V = 1'b1;
                 else if (~A[31] & ~B[31] & ALUResult[31])
@@ -85,7 +86,7 @@ module alu(
             end
 			4'b0110 :   // Sub with Carry
             begin
-                {C,ALUResult} = A - B - C;	//-C or +C?
+                {C,ALUResult} = A - B - ~PrevC;		//not working
                 if (A[31] & ~B[31] & ~ALUResult[31])
                     V = 1'b1;
                 else if (~A[31] & B[31] & ALUResult[31])
@@ -97,7 +98,7 @@ module alu(
             end
 			4'b0111 :   // Reverse Sub with Carry
             begin
-                {C,ALUResult} = B - A - C;	//-C or +C?
+                {C,ALUResult} = B - A - ~PrevC;		//not working
                 if (B[31] & ~A[31] & ~ALUResult[31])
                     V = 1'b1;
                 else if (~B[31] & A[31] & ALUResult[31])
@@ -142,13 +143,13 @@ module alu(
 				case(ShiftOp)
 				3'b000 : 	//MOV
 				begin
-					C = C;	//no change in C flag
+					C = PrevC;	//no change in C flag
 					ALUResult = B;
 				end
 				3'b001 : 	//LSL
 				begin
 					if (A[7:0] == 0) begin
-						C = C;
+						C = PrevC;
 						ALUResult = B;
 					end
 					else if (A[7:0] == 32) begin
@@ -168,7 +169,7 @@ module alu(
 				begin
 					if (A[7:0] == 0) begin
 						ALUResult = B;
-						C = C;
+						C = PrevC;
 					end else if (A[7:0] == 32) begin
 						ALUResult = 0;
 						C = B[31];
@@ -184,7 +185,7 @@ module alu(
 				begin
 					if (A[7:0] == 0) begin
 						ALUResult = B;
-						C = C;
+						C = PrevC;
 					end else if (A[7:0] >= 32) begin
 						if (B[31] == 0) begin
 							ALUResult = 0;
@@ -201,12 +202,12 @@ module alu(
 				end
 				3'b100 : 	//RRX
 				begin
-					{ALUResult, C} = {C, ALUResult};
+					{ALUResult, C} = {PrevC, ALUResult};
 				end
 				3'b101 : 	//ROR
 				begin
 					if (A[7:0] == 0) begin
-						C = C;
+						C = PrevC;
 						ALUResult = B;
 					end else if (A[4:0] == 0) begin
 						C = B[31];
