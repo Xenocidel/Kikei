@@ -86,7 +86,7 @@ module alu(
             end
 			4'b0110 :   // Sub with Carry
             begin
-                {C,ALUResult} = A - B - ~PrevC;
+                {C,ALUResult} = A - B - ~PrevC;		//not working
                 if (A[31] & ~B[31] & ~ALUResult[31])
                     V = 1'b1;
                 else if (~A[31] & B[31] & ALUResult[31])
@@ -98,7 +98,7 @@ module alu(
             end
 			4'b0111 :   // Reverse Sub with Carry
             begin
-                {C,ALUResult} = B - A - ~PrevC;	//-C or +C?
+                {C,ALUResult} = B - A - ~PrevC;		//not working
                 if (B[31] & ~A[31] & ~ALUResult[31])
                     V = 1'b1;
                 else if (~B[31] & A[31] & ALUResult[31])
