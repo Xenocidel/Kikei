@@ -1,4 +1,4 @@
-module decoder(input  logic [1:0] Op,
+module decoder(input  logic [1:0] Op,Op2,
 			   input  logic [5:0] Funct,
 			   input  logic [3:0] Rd,
 			   input  logic [11:0] Src2,
@@ -18,9 +18,22 @@ module decoder(input  logic [1:0] Op,
 	always_comb
 		casex(Op)
 								 // Data-processing immediate
-			2'b00: if (Funct[5]) controls = 10'b0000101001;
+			2'b00:if (Op2 == 2'b10 && Funct[0]) begin
+			if(Funct[3]) begin
+			be = 1'b1;
+			 controls = 10'b0001111000;
+			 end
+			 else begin
+			 be = 1'b1;
+			 controls = 10'b0001111010;
+			 end
+			end
+			else begin
+
+				if (Funct[5]) controls = 10'b0000101001;
 								 // Data-processing register
 				   else 		 controls = 10'b0000001001;
+			end
 								 // LDR
 			2'b01: if (Funct[0]) begin
 			if(Funct[3]) begin
