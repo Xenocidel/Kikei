@@ -235,8 +235,6 @@ module imem(
     assign RAM[7] = 32'h02899001;
     assign RAM[8] = 32'hE3A000D0;
     assign RAM[9] = 32'hE3A0205A;
-    // assign RAM[10] = 32'hE7802103;
-    // assign RAM[11] = 32'hE7906103;
     assign RAM[10] = 32'hE5C02000;
     assign RAM[11] = 32'hE5D06000;
     assign RAM[12] = 32'hE1520006;

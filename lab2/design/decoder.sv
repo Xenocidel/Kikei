@@ -23,7 +23,12 @@ module decoder(input  logic [1:0] Op,
 				   else 		 controls = 10'b0000001001;
 								 // LDR
 			2'b01: if (Funct[0]) begin
+			if(Funct[3]) begin
 			 controls = 10'b0001111000;
+			 end
+			 else begin
+			 controls = 10'b0001111010;
+			 end
 			 if(Funct[2]) begin
 			 be = 1'b1;
 			 end
@@ -33,7 +38,13 @@ module decoder(input  logic [1:0] Op,
 			 end
 								 // STR
 				   else begin
+					 if(Funct[3]) begin
 					 controls = 10'b1001110100;
+					 end
+					 else begin
+					 controls = 10'b1001110110;
+					 end
+
 					 if(Funct[2]) begin
 					 be = 1'b1;
 					 end
