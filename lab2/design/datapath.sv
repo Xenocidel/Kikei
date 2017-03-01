@@ -37,11 +37,11 @@ module datapath(input logic clk, reset,
 				Instr[15:12], ResultFinal, PCPlus8,
 				RD1, WriteData, RD3);
 	mux2 #(32) resmux(ALUResult, ReadData, MemtoReg, Result);
-	mux2 #(32) ressignmux(Result, {ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7], ReadData[7:0]}, Instr[27:26] == 2'b00 && Instr[6:5] == 2'b10 && Instr[25] == 1'b0, ResultFinal);
+	mux2 #(32) ressignmux(Result, {ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7],ReadData[7], ReadData[7:0]}, Instr[27:26] == 2'b00 && Instr[6:5] == 2'b10  && Instr[25] == 1'b0, ResultFinal);
 	extend ext(Instr[23:0], ImmSrc, ExtImm);
 	alu alushamt(RD3,{27'b0, Instr[11:7]}, 4'b1101, SrcShamt, ALUShamtFlags,{1'b0, Instr[6:5]}, 1'b0);
 	mux2 #(32) shamtmux(ExtImm, SrcShamt, Instr[27:25] == 3'b011, Src2);
-	mux2 #(32) signmux(RD3, {24'b0, Instr[11:8], Instr[3:0]}, Instr[27:26] == 2'b00 && Instr[6:5] == 2'b10 && Instr[25] == 1'b0 && Instr[22] == 1'b1, SrcBSign);
+	mux2 #(32) signmux(RD3, {24'b0, Instr[11:8], Instr[3:0]}, Instr[27:26] == 2'b00 && (Instr[6:5] == 2'b10 || Instr[6:5] == 2'b01)&& Instr[25] == 1'b0 && Instr[22] == 1'b1, SrcBSign);
 
 	// ALU logic
 	mux2 #(32) rightshiftmux({Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11], Instr[11:7]},
@@ -51,7 +51,7 @@ module datapath(input logic clk, reset,
 	mux2 #(32) srcamux(RD1, SrcAPre, Instr[4]==0 && Instr[25:21]==5'b01101, SrcA);	//Rn/R15 and shamt5 selected by non-MOV shift op
 
 	mux2 #(32) srcbmux(WriteData, Src2, ALUSrc, SrcBPre);
-	mux2 #(32) srcbfinalmux(SrcBPre, SrcBSign, Instr[27:26] == 2'b00 && Instr[6:5] == 2'b10 && Instr[25] == 1'b0, SrcBFinal);
+	mux2 #(32) srcbfinalmux(SrcBPre, SrcBSign, Instr[27:26] == 2'b00 && (Instr[6:5] == 2'b10 || Instr[6:5] == 2'b01) && Instr[25] == 1'b0, SrcBFinal);
 
 	mux2 #(32) srcbimmmux(SrcBFinal, {24'b0, Instr[7:0]} >> (Instr[11:8]*2), Instr[27:25]==001, SrcB); //imm8 ror rot*2 for Immediate instructions selected if immediate data processing
 	alu 		alu(SrcA, SrcB, ALUControl, ALUResult, ALUFlags, ShiftOp, PrevC);

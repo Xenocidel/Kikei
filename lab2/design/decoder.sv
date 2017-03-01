@@ -9,7 +9,7 @@ module decoder(input  logic [1:0] Op,Op2,
 			   output logic [3:0] ALUControl,
 			   output logic [2:0] ShiftOp,
 			   output logic wr14,
-				 output logic be
+				 output logic [1:0]be
 			   );
 	logic [9:0] controls;
 	logic 		Branch, ALUOp, S;
@@ -20,13 +20,33 @@ module decoder(input  logic [1:0] Op,Op2,
 								 // Data-processing immediate
 			2'b00:if (Op2 == 2'b10 && Funct[0]) begin
 			if(Funct[3]) begin
-			be = 1'b1;
+			be = 2'b01;
 			 controls = 10'b0001111000;
 			 end
 			 else begin
-			 be = 1'b1;
+			 be = 2'b01;
 			 controls = 10'b0001111010;
 			 end
+			end
+			else if (Op2 == 2'b01 && Funct[0]) begin
+			if(Funct[3]) begin
+			be = 2'b10;
+			 controls = 10'b0001111000;
+			 end
+			 else begin
+			 be = 2'b10;
+			 controls = 10'b0001111010;
+			 end
+			end
+			else if (Op2 == 2'b01 && ~Funct[0]) begin
+			if(Funct[3]) begin
+			be = 2'b10;
+			controls = 10'b1001110100;
+			end
+			else begin
+			be = 2'b10;
+			controls = 10'b1001110110;
+			end
 			end
 			else begin
 
@@ -43,10 +63,10 @@ module decoder(input  logic [1:0] Op,Op2,
 			 controls = 10'b0001111010;
 			 end
 			 if(Funct[2]) begin
-			 be = 1'b1;
+			 be = 2'b01;
 			 end
 			 else begin
-			 be = 1'b0;
+			 be = 2'b00;
 			 end
 			 end
 								 // STR
@@ -59,10 +79,10 @@ module decoder(input  logic [1:0] Op,Op2,
 					 end
 
 					 if(Funct[2]) begin
-					 be = 1'b1;
+					 be = 2'b01;
 					 end
 					 else begin
-					 be = 1'b0;
+					 be = 2'b00;
 					 end
 					 end
 								 // B

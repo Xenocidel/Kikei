@@ -11,7 +11,7 @@ module controller(input logic clk, reset,
 				logic [2:0] ShiftOp,
 				logic wr14,
 				logic PrevC,
-				output logic be
+				output logic [1:0]be
 				);
 logic [1:0] FlagW;
 logic 		PCS, RegW, MemW;

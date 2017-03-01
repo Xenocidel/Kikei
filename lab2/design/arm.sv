@@ -4,7 +4,7 @@ module arm(input logic clk, reset,
 		output logic MemWrite,
 		output logic [31:0] ALUResult, WriteData,
 		input logic [31:0] ReadData,
-		output logic be);
+		output logic [1:0]be);
 	logic [3:0] ALUFlags, ALUControl;
 	logic RegWrite,
 			ALUSrc, MemtoReg, PCSrc;

@@ -6,7 +6,7 @@ module top(
     );
 
     logic [31:0] PC, Instr, ReadData;
-    logic be;
+    logic [1:0]be;
 
 
     // instantiate processor and memories

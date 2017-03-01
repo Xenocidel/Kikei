@@ -1,4 +1,4 @@
-module dmem(input  logic			clk, we, be,
+module dmem(input  logic			clk, we, [1:0]be,
 			input  logic [31:0]		a, wd,
 			output logic [31:0]		rd);
 
@@ -17,17 +17,25 @@ module dmem(input  logic			clk, we, be,
 
 	//assign rd = RAM[a[31:2]];	//word aligned
 	always_comb begin
-		if(be) begin
+		if(be == 2'b01) begin
 		casex(a[1:0])
 		2'b00:
-		rd <= {22'b0, RAM0[a[31:2]]};
+		rd <= {24'b0, RAM0[a[31:2]]};
 		2'b01:
-		rd <= {22'b0, RAM1[a[31:2]]};
+		rd <= {24'b0, RAM1[a[31:2]]};
 		2'b10:
-		rd <= {22'b0, RAM2[a[31:2]]};
+		rd <= {24'b0, RAM2[a[31:2]]};
 		2'b11:
-		rd <= {22'b0, RAM3[a[31:2]]};
+		rd <= {24'b0, RAM3[a[31:2]]};
 
+		endcase
+		end
+		else if (be == 2'b10) begin
+		casex(a[0])
+		1'b0:
+		rd <= {16'b0, RAM1[a[31:2]], RAM0[a[31:2]]};
+		1'b1:
+		rd <= {16'b0, RAM3[a[31:2]], RAM2[a[31:2]]};
 		endcase
 		end
 		else begin
@@ -37,7 +45,7 @@ module dmem(input  logic			clk, we, be,
 
 	always_ff@(posedge clk)
 		if(we) begin
-		if(be)begin
+		if(be == 2'b01)begin
 		casex(a[1:0])
 		2'b00:
 		RAM0[a[10:2]] <= wd[7:0];
@@ -47,6 +55,18 @@ module dmem(input  logic			clk, we, be,
 		RAM2[a[10:2]] <= wd[7:0];
 		2'b11:
 		RAM3[a[10:2]] <= wd[7:0];
+		endcase
+		end
+		else if(be == 2'b10) begin
+		casex(a[0])
+		1'b0: begin
+		RAM0[a[10:2]] <= wd[7:0];
+		RAM1[a[10:2]] <= wd[15:8];
+		end
+		1'b1: begin
+		RAM2[a[10:2]] <= wd[7:0];
+		RAM3[a[10:2]] <= wd[15:8];
+		end
 		endcase
 		end
 		else begin
