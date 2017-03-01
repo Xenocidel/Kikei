@@ -1,0 +1,34 @@
+
+  Linking design 'arm'
+  Using the following designs and libraries:
+  --------------------------------------------------------------------------
+  * (7 designs)               /users/ugrad2/2015/spring/oub/EECS_112L/Lab2/syn/arm.db, etc
+  saed32lvt_tt1p05vn40c (library) /users/ugrad2/2012/spring/pooriam/libraries/saed32lvt_tt1p05vn40c.db
+  saed32sram_tt1p05vn40c (library) /users/ugrad2/2012/spring/pooriam/libraries/saed32sram_tt1p05vn40c.db
+  dw_foundation.sldb (library) /ecelib/linware/synopsys15/dc/libraries/syn/dw_foundation.sldb
+
+Information: Building the design 'decoder'. (HDL-193)
+Warning: Cannot find the design 'decoder' in the library 'WORK'. (LBR-1)
+Information: Building the design 'mux2' instantiated from design 'datapath' with
+	the parameters "32". (HDL-193)
+Warning: Cannot find the design 'mux2' in the library 'WORK'. (LBR-1)
+Information: Building the design 'flopr' instantiated from design 'datapath' with
+	the parameters "32". (HDL-193)
+Warning: Cannot find the design 'flopr' in the library 'WORK'. (LBR-1)
+Information: Building the design 'mux2' instantiated from design 'datapath' with
+	the parameters "4". (HDL-193)
+Warning: Cannot find the design 'mux2' in the library 'WORK'. (LBR-1)
+Information: Building the design 'regfile'. (HDL-193)
+Warning: Cannot find the design 'regfile' in the library 'WORK'. (LBR-1)
+Information: Building the design 'extend'. (HDL-193)
+Warning: Cannot find the design 'extend' in the library 'WORK'. (LBR-1)
+Information: Building the design 'flopenr' instantiated from design 'condlogic' with
+	the parameters "2". (HDL-193)
+Warning: Cannot find the design 'flopenr' in the library 'WORK'. (LBR-1)
+Warning: Unable to resolve reference 'decoder' in 'controller'. (LINK-5)
+Warning: Unable to resolve reference 'mux2' in 'datapath'. (LINK-5)
+Warning: Unable to resolve reference 'flopr' in 'datapath'. (LINK-5)
+Warning: Unable to resolve reference 'regfile' in 'datapath'. (LINK-5)
+Warning: Unable to resolve reference 'extend' in 'datapath'. (LINK-5)
+Warning: Unable to resolve reference 'flopenr' in 'condlogic'. (LINK-5)
+0

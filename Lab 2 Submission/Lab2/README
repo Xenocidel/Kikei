@@ -1,0 +1,49 @@
+############################################################
+#		Manual directions to simuluate our project:        #
+############################################################
+
+1. Go into the "sim" folder, execute: "source run".
+
+2. To view the waveform, execute: "vsim -64 -gui -view waveform.wlf".
+
+#This simulation will also provide the waveforms of the Register File values.
+
+
+
+############################################################
+#		Manual directions to synthesize our project:       #
+############################################################
+1.	While inside the syn folder, run the following command to add the Synopsys toolset to your PATH variable:
+	
+	source /ecelib/linware/synopsys15/env/dc.csh
+
+
+2. 	Inside your synthesis script, the $design is assumed to point to your VHDL/Verilog/SVerilog design files, if this variable is already set in your environment, you don't need to run it.
+	
+	While outside the syn folder (where the design folder is located), run:
+	
+	setenv design `pwd`/design/
+
+3. 	While inside the syn folder, the folllowing command will invoke the Synopsys Design Compiler (the synthesizer tool) and pass the synth.tcl script to run:
+	
+	dc_shell-t -f synth.tcl
+
+4. 	If you want to work with Graphical User Interface (GUI), run the following command (instead of step 3):
+	
+	dc_shell-t -gui
+	
+	This requires you to copy and paste each step of the synth.tcl (without the comments), 
+	and manually run each step in the "dc_shell>" command prompt.
+	
+
+5.	In order to exit the tool, type "quit".
+
+
+
+
+
+#Project developed by group Kikei.
+	Jeffrey Han, 51999492
+	Aaron Liao, 90811748
+	Bryan Ou, 11074596
+	Kelvin Phan, 51197373

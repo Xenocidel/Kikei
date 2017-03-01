@@ -1,0 +1,78 @@
+Warning: Detected use of obsolete/unsupported feature.  The following
+	will not be available in a future release of the application:
+	elaborate -update. Use plain elaborate instead (CMD-100)
+Loading db file '/ecelib/linware/synopsys15/dc/libraries/syn/gtech.db'
+Loading db file '/ecelib/linware/synopsys15/dc/libraries/syn/standard.sldb'
+  Loading link library 'saed32lvt_tt1p05vn40c'
+  Loading link library 'saed32sram_tt1p05vn40c'
+  Loading link library 'gtech'
+Running PRESTO HDLC
+Presto compilation completed successfully.
+Elaborated 1 design.
+Current design is now 'arm'.
+Information: Building the design 'controller'. (HDL-193)
+Presto compilation completed successfully.
+Information: Building the design 'datapath'. (HDL-193)
+Presto compilation completed successfully.
+Warning: Cannot find the design 'decoder' in the library 'WORK'. (LBR-1)
+Information: Building the design 'decoder'. (HDL-193)
+Warning: Cannot find the design 'decoder' in the library 'WORK'. (LBR-1)
+Information: Building the design 'condlogic'. (HDL-193)
+Presto compilation completed successfully.
+Warning: Cannot find the design 'mux2' in the library 'WORK'. (LBR-1)
+Information: Building the design 'mux2' instantiated from design 'datapath' with
+	the parameters "32". (HDL-193)
+Warning: Cannot find the design 'mux2' in the library 'WORK'. (LBR-1)
+Warning: Cannot find the design 'flopr' in the library 'WORK'. (LBR-1)
+Information: Building the design 'flopr' instantiated from design 'datapath' with
+	the parameters "32". (HDL-193)
+Warning: Cannot find the design 'flopr' in the library 'WORK'. (LBR-1)
+Information: Building the design 'adder' instantiated from design 'datapath' with
+	the parameters "32". (HDL-193)
+Presto compilation completed successfully.
+Warning: Cannot find the design 'mux2' in the library 'WORK'. (LBR-1)
+Information: Building the design 'mux2' instantiated from design 'datapath' with
+	the parameters "4". (HDL-193)
+Warning: Cannot find the design 'mux2' in the library 'WORK'. (LBR-1)
+Warning: Cannot find the design 'regfile' in the library 'WORK'. (LBR-1)
+Information: Building the design 'regfile'. (HDL-193)
+Warning: Cannot find the design 'regfile' in the library 'WORK'. (LBR-1)
+Warning: Cannot find the design 'extend' in the library 'WORK'. (LBR-1)
+Information: Building the design 'extend'. (HDL-193)
+Warning: Cannot find the design 'extend' in the library 'WORK'. (LBR-1)
+Information: Building the design 'alu'. (HDL-193)
+
+Statistics for case statements in always block at line 14 in file
+	'/users/ugrad2/2015/spring/oub/EECS_112L/Lab2/design/alu.sv'
+===============================================
+|           Line           |  full/ parallel  |
+===============================================
+|            26            |    auto/auto     |
+|           143            |    auto/auto     |
+===============================================
+Statistics for MUX_OPs
+===========================================================
+| block name/line  | Inputs | Outputs | # sel inputs | MB |
+===========================================================
+|     alu/164      |   32   |    1    |      5       | N  |
+|     alu/180      |   32   |    1    |      5       | N  |
+|     alu/199      |   32   |    1    |      5       | N  |
+|     alu/216      |   32   |    1    |      5       | N  |
+===========================================================
+Presto compilation completed successfully.
+Warning: Cannot find the design 'flopenr' in the library 'WORK'. (LBR-1)
+Information: Building the design 'flopenr' instantiated from design 'condlogic' with
+	the parameters "2". (HDL-193)
+Warning: Cannot find the design 'flopenr' in the library 'WORK'. (LBR-1)
+Information: Building the design 'condcheck'. (HDL-193)
+
+Statistics for case statements in always block at line 37 in file
+	'/users/ugrad2/2015/spring/oub/EECS_112L/Lab2/design/condlogic.sv'
+===============================================
+|           Line           |  full/ parallel  |
+===============================================
+|            38            |    auto/auto     |
+===============================================
+Presto compilation completed successfully.
+Warning: Design 'arm' has '6' unresolved references. For more detailed information, use the "link" command. (UID-341)
+1

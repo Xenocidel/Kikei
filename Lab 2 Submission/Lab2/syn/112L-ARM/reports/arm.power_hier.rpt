@@ -1,0 +1,59 @@
+Information: Propagating switching activity (medium effort zero delay simulation). (PWR-6)
+Warning: Design has unannotated primary inputs. (PWR-414)
+Warning: Design has unannotated black box outputs. (PWR-428)
+ 
+****************************************
+Report : power
+        -hier
+        -analysis_effort medium
+        -verbose
+Design : arm
+Version: J-2014.09-SP4
+Date   : Tue Feb 28 21:16:51 2017
+****************************************
+
+
+Library(s) Used:
+
+    saed32lvt_tt1p05vn40c (File: /users/ugrad2/2012/spring/pooriam/libraries/saed32lvt_tt1p05vn40c.db)
+
+
+Operating Conditions: tt1p05vn40c   Library: saed32lvt_tt1p05vn40c
+Wire Load Model Mode: enclosed
+
+Design        Wire Load Model            Library
+------------------------------------------------
+arm                    8000              saed32lvt_tt1p05vn40c
+controller             ForQA             saed32lvt_tt1p05vn40c
+datapath               8000              saed32lvt_tt1p05vn40c
+condlogic              ForQA             saed32lvt_tt1p05vn40c
+adder_WIDTH32_0        ForQA             saed32lvt_tt1p05vn40c
+alu_0                  8000              saed32lvt_tt1p05vn40c
+condcheck              ForQA             saed32lvt_tt1p05vn40c
+alu_1                  8000              saed32lvt_tt1p05vn40c
+adder_WIDTH32_1        ForQA             saed32lvt_tt1p05vn40c
+
+
+Global Operating Voltage = 1.05 
+Power-specific unit information :
+    Voltage Units = 1V
+    Capacitance Units = 1.000000ff
+    Time Units = 1ns
+    Dynamic Power Units = 1uW    (derived from V,C,T units)
+    Leakage Power Units = 1pW
+
+
+--------------------------------------------------------------------------------
+                                       Switch   Int      Leak     Total
+Hierarchy                              Power    Power    Power    Power    %
+--------------------------------------------------------------------------------
+arm                                     133.489  211.979 2.77e+09 3.12e+03 100.0
+  dp (datapath)                         133.068  208.697 2.75e+09 3.09e+03  99.1
+    alu (alu_1)                         122.799  191.221 2.47e+09 2.79e+03  89.4
+    alushamt (alu_0)                      4.096    8.354 8.45e+07   96.947   3.1
+    pcadd2 (adder_WIDTH32_1)                N/A    2.818 7.23e+07   74.763   2.4
+    pcadd1 (adder_WIDTH32_0)              2.667    2.508 7.23e+07   77.495   2.5
+  c (controller)                          6.735    3.282 2.42e+07   34.203   1.1
+    cl (condlogic)                        2.003    3.282 2.42e+07   29.471   0.9
+      cc (condcheck)                      1.737    2.718 1.71e+07   21.587   0.7
+1
