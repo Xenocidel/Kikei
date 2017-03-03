@@ -4,7 +4,8 @@ module condlogic(input logic clk, reset,
 			input logic [1:0] FlagW,
 			input logic PCS, RegW, MemW,
 			output logic PCSrc, RegWrite,
-						MemWrite);
+						MemWrite,
+			output logic PrevC);
 	logic [1:0] FlagWrite;
 	logic [3:0] Flags;
 	logic CondEx;
@@ -20,6 +21,8 @@ module condlogic(input logic clk, reset,
 	assign RegWrite = RegW & CondEx;
 	assign MemWrite = MemW & CondEx;
 	assign PCSrc = PCS & CondEx;
+	
+	assign PrevC = Flags[1];
 endmodule
 
 module condcheck(input logic [3:0] Cond,

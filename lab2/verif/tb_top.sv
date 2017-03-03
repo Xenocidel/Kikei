@@ -26,7 +26,7 @@ module tb_top();
 	int clk_cnt;
 	always @(posedge clk) begin
 		clk_cnt++;
-		if (clk_cnt > 100) begin
+		if (clk_cnt > 300) begin
 			for (int i = 0; i<16; i++) begin
 				$display("%g %x", i, tb_top.dut.arm.dp.rf.rf[i]);
 			end
@@ -36,25 +36,26 @@ module tb_top();
 	
     // check that 7 gets written to address 0x64
     // at end of program
-    always @(negedge clk)
-    begin
-        if(MemWrite) begin
-            if(DataAdr === 100 & WriteData === 7) 
-            begin
-                $display("Simulation succeeded");
-                $stop;
-            end 
-            else if (DataAdr !== 96) 
-            begin
-                $display("Simulation failed");
-                $stop;
-            end
-        end
-    end
+    // always @(negedge clk)
+    // begin
+        // if(MemWrite) begin
+            // if(DataAdr === 252 &  WriteData === 22) 
+            // begin
+                // $display("Simulation succeeded");
+                // $stop;
+            // end 
+            // else //if (DataAdr !== 96) 
+            // begin
+                // $display("Simulation failed");
+                // $display("your score is %d out of 22", WriteData);
+				// $stop;
+            // end
+        // end
+    // end
 
-    // Limits sim time to 400ns
+    // Limits sim time to 30000ns
     initial begin
-    #400;
+    #30000;
     $finish;
     end
 endmodule

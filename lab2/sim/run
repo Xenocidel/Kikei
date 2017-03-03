@@ -1,0 +1,16 @@
+cd design
+vlog -quiet -64 -sv -f rtl.cfg -work ../work
+cd ../verif
+vlog -quiet -64 -sv -f tb.cfg -work ../work
+vopt -quiet -64 tb_top -o tb_top_opt +acc -work ../work
+cd ..
+vsim -quiet -64 -c tb_top_opt -do sim/sim.do
+
+
+# If you want to simulate the behavioral memory add the following switch to the vsim command:
+
+#      +define+sim
+
+# Just note that sim is the identifier you have used in `ifdef in your design files.
+
+
