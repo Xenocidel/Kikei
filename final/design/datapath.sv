@@ -15,7 +15,7 @@ module datapath(input logic clk, reset,
 				input logic wr14,
 				logic PrevC
 				);
-	logic [31:0] PCNext, PCPlus4, PCPlus8;
+	logic [31:0] PCNext, PCPlus4, PCPlus8;	//PCPlus8 = PCPlus8D in diagram
 
 	logic [31:0] ExtImm, SrcA, SrcAPre, SrcShamt,Src2, SrcB,SrcBPre, SrcBSign, SrcBFinal, Result,  ResultFinal, RD1, RD3;
 	// logic [3:0] RA1A;
@@ -26,7 +26,8 @@ module datapath(input logic clk, reset,
 	mux2 #(32) pcmux(PCPlus4, Result, PCSrc, PCNext);
 	flopr #(32) pcreg(clk, reset, PCNext, PC);
 	adder #(32) pcadd1(PC, 32'b100, PCPlus4);
-	adder #(32) pcadd2(PCPlus4, 32'b100, PCPlus8);
+	// PC adder no longer needed for pipelining (see Ch7 slide 143)
+	// adder #(32) pcadd2(PCPlus4, 32'b100, PCPlus8);
 
 	// register file logic
 	// mux2 #(4) ra1muxA(Instr[11:7], Instr[11:8], Instr[4], RA1A);	//shamt5 and Rs selected by Instr[4]
