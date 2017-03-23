@@ -145,7 +145,7 @@ module decoder(input  logic [1:0] Op,Op2,
 			// Rm = Src2[3:0];
 		// end
 	end
-	else if ((Funct[5] == 1'b0) & (Src2[6:5] == 2'b11) & (Src2[11:4] == 8'b00000000))	//Rotate Right Extend
+	else if ((Funct[5] == 1'b0) & (Src2[6:5] == 2'b11) & (Src2[11:7] == 5'b0) && Src2[4]==1'b0)	//Rotate Right Extend
 	begin
 		ShiftOp[2:0] = 3'b100;
 		// Src2Val = Src2[4];

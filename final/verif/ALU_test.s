@@ -110,7 +110,7 @@
 011c   ADD  R6, R0, #0x00000015 ; 	R6 = ‭21
 0120   ADD  R7, R0, #0x00000017 ; 	R7 = 23
 0124   SUBS R8, R6, R7 ; 			R8 = -2
-0128   SBC	 R6, R7, R6 ; 			R6 = 23 - 21 - 0 = 2 
+0128   SBC	 R6, R7, R6 ; 			R6 = 23 - 21 - 0 = 2 //getting 4
 012c   SBC	 R7, R6, #2 ; 			R7 = 2 - 2 - 0 = 0
 0130   CMP R7,R0
 0134   ADDEQ	R9,R9,#1 	R9= 12					/*Increment pass count */
@@ -124,70 +124,70 @@
        
        /*RSC  check */
        
-       RSC	 R6, R8, R6 ;			R6 = 4
-       RSC	 R7, R6, #12 ;			R7 = 8
-       CMP R7,#8
-       ADDEQ	R9,R9,#1 	R9= 14					/*Increment pass count */
+0148   RSC	 R6, R8, R6 ;			R6 = 4
+014c   RSC	 R7, R6, #12 ;			R7 = 8
+0150   CMP R7,#8
+0154   ADDEQ	R9,R9,#1 	R9= 14					/*Increment pass count */
        
        /*BIC  Check */
        
-       BIC  R6,R3,R5		R6 = AAAAAAAA
-       CMP  R6,R3			Z = 1
-       ADDEQ	R9,R9,#1 	R9= 15					/*Increment pass count */
-       BIC  R6, R3, #128 ; R6 = 128
-       CMP  R6,#128			Z = 0
-       ADDEQ	R9,R9,#1 	R9= 15					/*Increment pass count */
+0158   BIC  R6,R3,R5		R6 = AAAAAAAA
+015c   CMP  R6,R3			Z = 1
+0160   ADDEQ	R9,R9,#1 	R9= 15					/*Increment pass count */
+0164   BIC  R6, R3, #128 ; R6 = 128
+0168   CMP  R6,#128			Z = 0
+016c   ADDEQ	R9,R9,#1 	R9= 15					/*don't Increment pass count */
        
        /*Logical Shift	left	check */
        
-       MOV r7, #8																			
-       LSL  r6,r3,R7		R6 = AAAAAA00
-       SUB  r6,r3,r6		R6 = AA
-       CMP  r6,#170		Z = 1
-       ADDEQ	R9,R9,#1 	R9 = 16					/*Increment pass count */
+0170   MOV r7, #8																	
+0174   LSL  r6,r3,R7		R6 = AAAAAA00
+0178   SUB  r6,r3,r6		R6 = AA
+017c   CMP  r6,#170		Z = 1
+0180   ADDEQ	R9,R9,#1 	R9 = 16					/*Increment pass count */
        
        /*; logical Shift	right check */
        
-       ADD r7, R0, #16
-       LSR  R6,R3,R7		AAAA
-       LSR  R6,R6,#16		0000
-       cmp  r6,#0
-       ADDEQ	R9,R9,#1 	R9 = 17					/*;Increment pass count*/
+0184   ADD r7, R0, #16
+0188   LSR  R6,R3,R7		AAAA
+018c   LSR  R6,R6,#16		0000
+0190   cmp  r6,#0
+0194   ADDEQ	R9,R9,#1 	R9 = 17					/*;Increment pass count*/
        
        /*; Arithmetic Shift	right check */
        
-       ADD R6,R0,#0xF000000D	    R6 = F000000D
-       ASR R6, R6, #4 ;			R6 = FF000000
-       cmp r6,#0xFF000000																					
-       ADDEQ	R9,R9,#1 	R9 = 18					/*;Increment pass count*/
-       mov r6, #3					R6 = 3
-       ASR R7, R7, R6 ;			R7 = 2
-       cmp r7,#2
-       ADDEQ	R9,R9,#1 	R9 = 19					/*;Increment pass count*/
+0198   ADD R6,R0,#0xF000000D	    R6 = F000000D
+019c   ASR R6, R6, #4 ;			R6 = FF000000
+01a0   cmp r6,#0xFF000000													
+01a4   ADDEQ	R9,R9,#1 	R9 = 18					/*;Increment pass count*/
+01a8   mov r6, #3					R6 = 3
+01ac   ASR R7, R7, R6 ;			R7 = 2
+01b0   cmp r7,#2
+01b4   ADDEQ	R9,R9,#1 	R9 = 19					/*;Increment pass count*/
        
        /*Rotate	right	check */
        
-       ROR  r6,r3,#1		R6 = 55555555
-       cmp  r6,r5			Z = 1
-       ADDEQ	R9,R9,#1 	R9 = 20					/*Increment pass count*/
-       MOV R8, #4			R8 = 4
-       ROR  r6,r3,R8		R6 = AAAAAAAA
-       cmp  r6,r3			Z = 1
-       ADDEQ	R9,R9,#1 	R9 = 21					/*Increment pass count*/
+01b8   ROR  r6,r3,#1		R6 = 55555555
+01bc   cmp  r6,r5			Z = 1
+01c0   ADDEQ	R9,R9,#1 	R9 = 20					/*Increment pass count*/
+01c4   MOV R8, #4			R8 = 4
+01c8   ROR  r6,r3,R8		R6 = AAAAAAAA
+01cc   cmp  r6,r3			Z = 1
+01d0   ADDEQ	R9,R9,#1 	R9 = 21					/*Increment pass count*/
        
        /*Extend	rotate */
        
-       RRX  R6,R3			55555555
-       CMP r6, r5
-       ADDCS	R9,R9,#1 	R9 = 22					/*;Increment pass count */
+01d4   RRX  R6,R3			55555555
+01d8   CMP r6, r5
+01dc   ADDCS	R9,R9,#1 	R9 = 22					/*;Increment pass count */
        
        
-       /*Pass counter is supposed to be 10 at the end of the program
+       /*Pass counter is supposed to be 22 (0x16) at the end of the program
        Write the passcount to mem[252]
        End of program.
        */
-       mov r0,#252
-       str r9,[r0,#0]
+01e0   mov r0,#252
+01e4   str r9,[r0,#0]
        
        loop:
        B loop

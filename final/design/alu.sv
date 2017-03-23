@@ -86,7 +86,8 @@ module alu(
             end
 			4'b0110 :   // Sub with Carry
             begin
-                {C,ALUResult} = A - B - ~PrevC;		//not working
+                // {C,ALUResult} = A - B - ~PrevC;		//negating PrevC results in 0 or x
+				{C,ALUResult} = A + ~B + PrevC;			//twos complement
                 if (A[31] & ~B[31] & ~ALUResult[31])
                     V = 1'b1;
                 else if (~A[31] & B[31] & ALUResult[31])
@@ -98,7 +99,8 @@ module alu(
             end
 			4'b0111 :   // Reverse Sub with Carry
             begin
-                {C,ALUResult} = B - A - ~PrevC;		//not working
+                // {C,ALUResult} = B - A - ~PrevC;	
+				{C,ALUResult} = B + ~A + PrevC;			//twos complement
                 if (B[31] & ~A[31] & ~ALUResult[31])
                     V = 1'b1;
                 else if (~B[31] & A[31] & ALUResult[31])
@@ -202,7 +204,7 @@ module alu(
 				end
 				3'b100 : 	//RRX
 				begin
-					{ALUResult, C} = {PrevC, ALUResult};
+					{ALUResult, C} = {PrevC, B};
 				end
 				3'b101 : 	//ROR
 				begin
@@ -237,13 +239,13 @@ module alu(
 				Z = ~|ALUResult;
 				N = ALUResult[31];
 			end
-			4'b1110 : 	// Clear
+			4'b1110 : 	// BIC (Bit Clear)
 			begin
 				ALUResult = A & ~B;
 				Z = ~|ALUResult;
 				N = ALUResult[31];
 			end
-			4'b1111 :   // NOT
+			4'b1111 :   // MVN/NOT
             begin
                 ALUResult = ~B;
 				Z = ~|ALUResult;
