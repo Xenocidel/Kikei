@@ -2,16 +2,24 @@ module hazard(input  logic			MemtoRegE,	// if data to be written is from ALU (0)
 			  input  logic			RegWriteW,	// if data is queued to be written to rf
 			  input  logic			RegWriteM,	// if data is queued to be written to rf
 			  input  logic [3:0]	RA1E,		// register address used for SrcA of ALU
+			  input  logic [3:0]	RA1D,
+			  input  logic [3:0]	RA2D,
 			  input  logic [3:0]	RA2E,
 			  input  logic [3:0]	WA3M,		// register to be written to
 			  input  logic [3:0]	WA3W,
+			  input  logic [3:0]	WA3E,
+			  input  logic			BranchTakenE,
+			  input	 logic			PCSrcD,
+			  input	 logic			PCSrcE,
+			  input	 logic			PCSrcM,
+			  input	 logic			PCSrcW,
 			  //input  logic			Match,
 			  output logic [1:0]	ForwardAE,
 			  output logic [1:0]	ForwardBE,
 			  output logic			FlushD,
 			  output logic			FlushE,
 			  output logic			StallD,
-			  output logic			StallF);
+			  output logic			StallF,);
 
 	
 	// Stalling Logic slide 157
