@@ -32,7 +32,7 @@ module arm(input logic clk, reset,
 	memwb memwb(clk, PCSrcM, RegWriteM, MemtoRegM, PCSrcW, RegWriteW, MemtoRegW);
 
 	datapath dp(clk, reset,
-			RegSrcE, RegWriteE, ImmSrcE,
+			RegSrcD, RegWriteW, ImmSrcD,
 			ALUSrcE, ALUControlE,
 			MemtoRegE, PCSrcD,
 			ALUFlags, PC, InstrE,
