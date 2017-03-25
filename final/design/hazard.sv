@@ -19,12 +19,12 @@ module hazard(input  logic			MemtoRegE,	// if data to be written is from ALU (0)
 			  output logic			FlushD,
 			  output logic			FlushE,
 			  output logic			StallD,
-			  output logic			StallF,);
+			  output logic			StallF);
 
 	
 	// Stalling Logic slide 157
 	logic Match_12D_E = (RA1D == WA3E) || (RA2D == WA3E);
-	logic ldrStallD = Match_12D_E && MemtoRegE
+	logic ldrStallD = Match_12D_E && MemtoRegE;
 	
 	// Control Stalling Logic slide 163
 	logic PCWrPendingF = PCSrcD || PCSrcE || PCSrcM;
